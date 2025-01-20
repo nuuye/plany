@@ -1,12 +1,13 @@
+require("dotenv").config();
 const express = require("express");
-
 const app = express();
-
 //import mongoDB
 const mongoose = require("mongoose");
 //link mongo to our app
+
+
 mongoose
-    .connect("mongodb+srv://mostowfithomas:ubEKRu0zq00KkJJV4@cluster0.j7epx.mongodb.net/")
+    .connect(process.env.MONGODB_URI)
     .then(() => console.log("Connexion à MongoDB réussie !"))
     .catch((err) => console.error("Connexion à MongoDB échouée !", err));
 
