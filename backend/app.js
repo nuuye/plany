@@ -3,15 +3,18 @@ const express = require("express");
 const app = express();
 //import mongoDB
 const mongoose = require("mongoose");
+
+const userRoutes = require("./routes/user");
+
 //link mongo to our app
-
-
 mongoose
     .connect(process.env.MONGODB_URI)
     .then(() => console.log("Connexion à MongoDB réussie !"))
     .catch((err) => console.error("Connexion à MongoDB échouée !", err));
 
-//Allow CORS
+app.use(express.json()); //retrieve requests bodies
+
+//Allow requests between different server, disabling CORS
 app.use((req, res, next) => {
     //allow access to our API from anywhere
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -25,10 +28,7 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use(express.json()); //retrieve requests bodies
-
-app.use((req, res) => {
-    res.json({ message: "Votre requête a bien été reçue !" });
-});
+//we give the initial routes to route files
+app.use("/api/auth", userRoutes);
 
 module.exports = app;
