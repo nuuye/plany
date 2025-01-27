@@ -10,8 +10,9 @@
         z-index: 1;
     }
 
-    .loginContainer{
+    .loginContainer, .checkContaier, .signupContainer{
         position: absolute;
         z-index: 2;
+        min-width: 400px;
     }
 }

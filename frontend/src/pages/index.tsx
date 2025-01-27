@@ -17,6 +17,7 @@ export default function Home() {
     const [email, setEmail] = useState("");
     const [hasAccount, setHasAccount] = useState(AccountStatus.START); // 0 neutral card, 1: hasAccount 2: needAccount
 
+    //API call to create an account
     const createAccount = async (data) => {
         try {
             const response = await fetch("http://localhost:8000/api/auth/signup", {
@@ -34,11 +35,24 @@ export default function Home() {
         }
     };
 
-    const hasAccountCheck = (email: string) => {
-        if (email) {
-            setHasAccount(AccountStatus.SIGNUP);
+    //checks if the email is registered in the database and updates the login interface
+    const hasAccountCheck = async (email: string) => {
+        try {
+            const response = await fetch("http://localhost:8000/api/auth/checkingEmail", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email }),
+            });
+            if (response.ok) {
+                setHasAccount(AccountStatus.LOGIN);
+            } else {
+                setHasAccount(AccountStatus.SIGNUP);
+            }
+        } catch (error) {
+            console.error("Error:", error);
         }
-
         //Si email entré et password vide, check si email présent en DB
         //Si email entré et password entré, check si match en DB
         //Si pas d'email alors field erreur
@@ -59,7 +73,6 @@ export default function Home() {
     type EmailFormValues = {
         email: string;
     };
-
 
     //signup handler
     const {
@@ -108,7 +121,7 @@ export default function Home() {
 
             {/* Check if user has an Account or not */}
             {hasAccount === AccountStatus.NEUTRAL ? (
-                <Card.Root maxW="m" className={styles.loginContainer}>
+                <Card.Root size="md" maxW="m" className={styles.checkContainer}>
                     <form onSubmit={handleSubmitEmail(onSubmitEmail)}>
                         <Card.Header>
                             <Card.Title>Create an account or log in to get started</Card.Title>
@@ -144,15 +157,19 @@ export default function Home() {
                 </Card.Root>
             ) : hasAccount === AccountStatus.LOGIN ? (
                 // Login form
-                <Card.Root maxW="m" className={styles.loginContainer}>
-                    <form onSubmit={handleSubmit(onSubmitLogin)}>
+                <Card.Root size="lg" maxW="md" className={styles.loginContainer}>
+                    <form onSubmit={handleSubmitLogin(onSubmitLogin)}>
                         <Card.Header>
                             <Card.Title>Log in to get started</Card.Title>
                             <Card.Description>Fill in the form below to continue</Card.Description>
                         </Card.Header>
                         <Card.Body>
                             <Stack gap="4" w="full">
-                                <Field label="Email" invalid={!!errorsLogin.email} errorText={errorsLogin.email?.message}>
+                                <Field
+                                    label="Email"
+                                    invalid={!!errorsLogin.email}
+                                    errorText={errorsLogin.email?.message}
+                                >
                                     <Input
                                         placeholder="Enter your email"
                                         {...registerLogin("email", { required: "email is required" })}
@@ -187,7 +204,7 @@ export default function Home() {
                 </Card.Root>
             ) : hasAccount === AccountStatus.SIGNUP ? (
                 // Signup form
-                <Card.Root maxW="m" className={styles.loginContainer}>
+                <Card.Root maxW="m" className={styles.signupContainer}>
                     <form onSubmit={handleSubmit(onSubmitSignup)}>
                         <Card.Header>
                             <Card.Title>Create an account to get started</Card.Title>
