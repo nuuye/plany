@@ -33,7 +33,7 @@ export default function Home() {
     const [hasAccount, setHasAccount] = useState<AccountStatus>(AccountStatus.START);
 
     //API call to create an account
-    const createAccount = async (data: SignupFormValues) : Promise<void> => {
+    const createAccount = async (data: SignupFormValues): Promise<void> => {
         try {
             const response = await fetch("http://localhost:8000/api/auth/signup", {
                 method: "POST",
@@ -50,8 +50,8 @@ export default function Home() {
         }
     };
 
-    //checks if the email is registered in the database and updates the login interface
-    const hasAccountCheck = async (email: string) : Promise<void> => {
+    //API call to check if an email is in the DB
+    const hasAccountCheck = async (email: string): Promise<void> => {
         try {
             const response = await fetch("http://localhost:8000/api/auth/checkingEmail", {
                 method: "POST",
@@ -60,21 +60,39 @@ export default function Home() {
                 },
                 body: JSON.stringify({ email }),
             });
-            if (response.ok) {
+
+            if (response.ok && response.status === 200) {
                 setHasAccount(AccountStatus.LOGIN);
             } else {
                 setHasAccount(AccountStatus.SIGNUP);
             }
         } catch (error) {
-            console.error("Error:", error);
+            console.log("Error:", error);
         }
-        //Si email entré et password vide, check si email présent en DB
-        //Si email entré et password entré, check si match en DB
-        //Si pas d'email alors field erreur
-        //Si pas de mot de passe field erreur
     };
 
-    //signup handler
+    const isLoginSuccessful = async (credentials: LoginFormValues): Promise<boolean> => {
+        try {
+            const response = await fetch("http://localhost:8000/api/auth/login", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(credentials),
+            });
+            if (response.ok) {
+                console.log("response is ok");
+                return true;
+            } else {
+                console.log("response is NOT ok");
+                return false;
+            }
+        } catch {
+            return false;
+        }
+    };
+
+    //signup form handler
     const {
         register,
         handleSubmit,
@@ -82,17 +100,20 @@ export default function Home() {
         reset,
     } = useForm<SignupFormValues>();
 
-    //email test handler
+    //email test form handler
     const {
         register: registerEmail,
         handleSubmit: handleSubmitEmail,
         formState: { errors: errorsEmail },
+        reset: resetEmail,
     } = useForm<EmailFormValues>();
 
+    //login form handler
     const {
         register: registerLogin,
         handleSubmit: handleSubmitLogin,
         formState: { errors: errorsLogin },
+        reset: resetLogin,
     } = useForm<LoginFormValues>();
 
     const onSubmitSignup: SubmitHandler<SignupFormValues> = (data) => {
@@ -102,6 +123,11 @@ export default function Home() {
 
     const onSubmitLogin: SubmitHandler<LoginFormValues> = (data) => {
         console.log(data);
+        if (isLoginSuccessful(data)) {
+            console.log("success");
+        } else {
+            console.log("error");
+        }
     };
 
     const onSubmitEmail: SubmitHandler<EmailFormValues> = (data) => {
@@ -112,8 +138,11 @@ export default function Home() {
 
     // When switching forms, reset the form values
     useEffect(() => {
-        reset();
-    }, [hasAccount, reset]);
+        reset(); //defaultValue on input for email
+        resetEmail({ email });
+        resetLogin({ email });
+    }, [hasAccount, reset, resetEmail, resetLogin, email]);
+    
 
     return (
         <div className={styles.mainContainer}>
@@ -135,6 +164,7 @@ export default function Home() {
                                     errorText={errorsEmail.email?.message}
                                 >
                                     <Input
+                                        defaultValue={email}
                                         placeholder="Enter your email"
                                         {...registerEmail("email", { required: "email is required" })}
                                     />

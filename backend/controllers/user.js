@@ -30,15 +30,15 @@ exports.login = (req, res, next) => {
                             token: "TOKEN",
                         });
                     } else {
-                        res.status(401).json({ message: "Incorrect credentials" });
+                        res.status(403).json({ message: "Incorrect credentials" });
                     }
                 });
             } else {
-                res.status(401).json({ message: "Incorrect credentials" });
+                res.status(404).json({ message: "Incorrect credentials" });
             }
         })
         .catch((err) => {
-            res.status(401).json({ err });
+            res.status(400).json({ err });
         });
 };
 
@@ -48,7 +48,7 @@ exports.emailCheck = (req, res, next) => {
             if (user) {
                 res.status(200).json({ message: "Utilisateur trouvé !" });
             } else {
-                res.status(401).json({ message: "Utilisateur introuvable" });
+                res.status(204).json({ message: "Utilisateur introuvable" });
             }
         })
         .catch((err) => {
