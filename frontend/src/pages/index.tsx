@@ -6,19 +6,34 @@ import { RiArrowRightLine } from "react-icons/ri";
 import { Boxes } from "../components/background/background-boxes";
 import { useForm, SubmitHandler } from "react-hook-form";
 
-const AccountStatus = {
-    START: -1,
-    NEUTRAL: 0,
-    LOGIN: 1,
-    SIGNUP: 2,
+enum AccountStatus {
+    START = -1, //home page
+    NEUTRAL = 0, //email check interface
+    LOGIN = 1, //login interface
+    SIGNUP = 2, //signup interface
+}
+
+type SignupFormValues = {
+    name: string;
+    email: string;
+    password: string;
+};
+
+type LoginFormValues = {
+    email: string;
+    password: string;
+};
+
+type EmailFormValues = {
+    email: string;
 };
 
 export default function Home() {
-    const [email, setEmail] = useState("");
-    const [hasAccount, setHasAccount] = useState(AccountStatus.START); // 0 neutral card, 1: hasAccount 2: needAccount
+    const [email, setEmail] = useState<string>("");
+    const [hasAccount, setHasAccount] = useState<AccountStatus>(AccountStatus.START);
 
     //API call to create an account
-    const createAccount = async (data) => {
+    const createAccount = async (data: SignupFormValues) : Promise<void> => {
         try {
             const response = await fetch("http://localhost:8000/api/auth/signup", {
                 method: "POST",
@@ -36,7 +51,7 @@ export default function Home() {
     };
 
     //checks if the email is registered in the database and updates the login interface
-    const hasAccountCheck = async (email: string) => {
+    const hasAccountCheck = async (email: string) : Promise<void> => {
         try {
             const response = await fetch("http://localhost:8000/api/auth/checkingEmail", {
                 method: "POST",
@@ -57,21 +72,6 @@ export default function Home() {
         //Si email entré et password entré, check si match en DB
         //Si pas d'email alors field erreur
         //Si pas de mot de passe field erreur
-    };
-
-    type SignupFormValues = {
-        name: string;
-        email: string;
-        password: string;
-    };
-
-    type LoginFormValues = {
-        email: string;
-        password: string;
-    };
-
-    type EmailFormValues = {
-        email: string;
     };
 
     //signup handler
