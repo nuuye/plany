@@ -1,10 +1,12 @@
 .menuContainer {
     background-color: #43606fd1;
+    .menuHeaderContainer {
+        font-weight: bold;
+    }
     .menuBodyContainer {
         display: flex;
         gap: 20px;
         .colorContainer {
-
             .colorSquare {
                 cursor: pointer;
             }

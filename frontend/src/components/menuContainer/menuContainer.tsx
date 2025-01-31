@@ -31,7 +31,7 @@ export default function MenuContainer({tasks, setTasks}: menuContainerProps) {
 
     return (
         <Card.Root className={styles.menuContainer}>
-            <Card.Header>Create a new task!</Card.Header>
+            <Card.Header className={styles.menuHeaderContainer} >Create a new task!</Card.Header>
             <Card.Body className={styles.menuBodyContainer}>
                 <Field.Root>
                     <Field.Label>Task description</Field.Label>

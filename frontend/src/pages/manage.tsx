@@ -2,7 +2,6 @@ import { Boxes } from "../components/background/background-boxes";
 import { Button, Card, Input, Stack } from "@chakra-ui/react";
 import styles from "./manage.module.scss";
 import Task from "../components/task/task";
-import { Field, Textarea } from "@chakra-ui/react";
 import MenuContainer from "../components/menuContainer/menuContainer";
 import { useState } from "react";
 
@@ -19,7 +18,7 @@ export default function Manage() {
             <Boxes allowColors={false} />
             <MenuContainer tasks={tasks} setTasks={setTasks} />
             <Card.Root className={styles.contentContainer}>
-                <Card.Header className={styles.contentContainerHeader}></Card.Header>
+                <Card.Header className={styles.contentContainerHeader}>My tasks</Card.Header>
                 <Card.Body className={styles.contentContainerBody}>
                     <div className={styles.tasksContainer}>
                         {tasks.map((task, index) => (
