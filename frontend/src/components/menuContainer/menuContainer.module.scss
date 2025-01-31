@@ -1,0 +1,13 @@
+.menuContainer {
+    background-color: #43606fd1;
+    .menuBodyContainer {
+        display: flex;
+        gap: 20px;
+        .colorContainer {
+
+            .colorSquare {
+                cursor: pointer;
+            }
+        }
+    }
+}

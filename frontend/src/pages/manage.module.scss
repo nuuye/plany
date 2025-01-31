@@ -1,0 +1,26 @@
+.mainContainer {
+    padding: 60px 25px 25px 25px;
+    height: 100vh;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+
+    .contentContainer {
+        background-color: #43606fd1;
+        grid-column: 2 / 5;
+        .contentContainerHeader {
+            display: flex;
+            .createButton {
+                width: 180px;
+                border-radius: 20px;
+            }
+        }
+        .contentContainerBody {
+            .tasksContainer {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    }
+}

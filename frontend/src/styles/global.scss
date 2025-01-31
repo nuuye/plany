@@ -19,6 +19,12 @@ input:focus {
     outline: none;
 }
 
+textarea:focus {
+    border-color: teal;
+    box-shadow: 0 0 0 1px teal;
+    outline: none;
+}
+
 html,
 body {
     height: 100%;

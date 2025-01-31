@@ -6,13 +6,24 @@
     justify-content: center;
     gap: 20px;
     position: relative;
-    h1{
+    h1 {
         z-index: 1;
     }
 
-    .loginContainer, .checkContaier, .signupContainer{
+    .loginContainer,
+    .checkContaier,
+    .signupContainer {
         position: absolute;
         z-index: 2;
         min-width: 400px;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
     }
 }

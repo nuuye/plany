@@ -3,7 +3,12 @@ import React from "react";
 import { motion } from "framer-motion";
 import styles from "./background-boxes.module.scss";
 
-export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
+interface BoxesCoreProps {
+    className?: string;
+    allowColors?: boolean;
+}
+
+export const BoxesCore: React.FC<BoxesCoreProps> = ({ className, allowColors = true, ...rest }) => {
     const rows = new Array(150).fill(1);
     const cols = new Array(100).fill(1);
 
@@ -27,7 +32,10 @@ export const BoxesCore = ({ className, ...rest }: { className?: string }) => {
                 <motion.div key={`row${i}`} className={styles.row}>
                     {cols.map((_, j) => (
                         <motion.div
-                            whileHover={{ backgroundColor: getRandomColor(), transition: { duration: 0 } }}
+                            whileHover={{
+                                backgroundColor: allowColors ? getRandomColor() : "rgba(0, 0, 0, 0)",
+                                transition: { duration: 0 },
+                            }}
                             animate={{ transition: { duration: 2 } }}
                             key={`col${j}`}
                             className={styles.cell}

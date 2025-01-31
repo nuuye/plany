@@ -142,7 +142,6 @@ export default function Home() {
         resetEmail({ email });
         resetLogin({ email });
     }, [hasAccount, reset, resetEmail, resetLogin, email]);
-    
 
     return (
         <div className={styles.mainContainer}>
@@ -150,7 +149,15 @@ export default function Home() {
 
             {/* Check if user has an Account or not */}
             {hasAccount === AccountStatus.NEUTRAL ? (
-                <Card.Root size="md" maxW="m" className={styles.checkContainer}>
+                <Card.Root
+                    data-state="open"
+                    _open={{
+                        animation: "fade-in 300ms ease-out",
+                    }}
+                    size="md"
+                    maxW="m"
+                    className={styles.checkContainer}
+                >
                     <form onSubmit={handleSubmitEmail(onSubmitEmail)}>
                         <Card.Header>
                             <Card.Title>Create an account or log in to get started</Card.Title>
