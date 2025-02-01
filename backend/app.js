@@ -5,6 +5,7 @@ const app = express();
 const mongoose = require("mongoose");
 
 const userRoutes = require("./routes/user");
+const taskRoutes = require("./routes/task");
 
 //link mongo to our app
 mongoose
@@ -30,5 +31,6 @@ app.use((req, res, next) => {
 
 //we give the initial routes to route files
 app.use("/api/auth", userRoutes);
+app.use("/api/management", taskRoutes);
 
 module.exports = app;
