@@ -1,7 +1,7 @@
-# To-Do App
+# Plany
 
 ## Description
-To-Do App is a web application that allows users to create and manage their personal tasks with a secure authentication system. Each user can log into their account to retrieve their saved tasks.
+Plany is a web application that allows users to create and manage their personal tasks with a secure authentication system. Each user can log into their account to retrieve their saved tasks.
 
 ## Features
 - **Authentication**: Secure sign-up and login (jwt)

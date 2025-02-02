@@ -21,17 +21,36 @@ type Task = {
     color: string;
 };
 
-export default function MenuContainer({tasks, setTasks}: menuContainerProps) {
+export default function MenuContainer({ tasks, setTasks }: menuContainerProps) {
     const [color, setColor] = useState<string>("");
     const [taskDescription, setTaskDescription] = useState<string>("");
 
-    const createTask = () => {
-        setTasks((prevTasks) => [...prevTasks, { description: taskDescription, color: color }]);
+    const createTask = async () => {
+        try {
+            const response = await fetch("http://localhost:8000/api/management/createTask", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ description: taskDescription, color: color }),
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Error while saving task:", errorData.message || response.statusText);
+                return;
+            } else {
+                setTasks((prevTasks) => [...prevTasks, { description: taskDescription, color: color }]);
+                console.log("task created and save in database");
+            }
+        } catch (error) {
+            console.error("Network error:", error);
+        }
     };
 
     return (
         <Card.Root className={styles.menuContainer}>
-            <Card.Header className={styles.menuHeaderContainer} >Create a new task!</Card.Header>
+            <Card.Header className={styles.menuHeaderContainer}>Create a new task!</Card.Header>
             <Card.Body className={styles.menuBodyContainer}>
                 <Field.Root>
                     <Field.Label>Task description</Field.Label>
