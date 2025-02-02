@@ -3,7 +3,7 @@ import { Button, Card, Input, Stack } from "@chakra-ui/react";
 import styles from "./manage.module.scss";
 import Task from "../components/task/task";
 import MenuContainer from "../components/menuContainer/menuContainer";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 type Task = {
     description: string;
@@ -13,10 +13,27 @@ type Task = {
 export default function Manage() {
     const [tasks, setTasks] = useState<Task[]>([]);
 
+    useEffect(() => {
+        retrieveTasks();
+    }, []);
+
+    const retrieveTasks = async () => {
+        try {
+            const response = await fetch("http://localhost:8000/api/management/getTasks");
+            if (!response.ok) {
+                console.error("Error while retrieving tasks");
+                return;
+            }
+            const data = await response.json();
+            setTasks(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
     return (
         <div className={styles.mainContainer}>
             <Boxes allowColors={false} />
-            <MenuContainer tasks={tasks} setTasks={setTasks} />
+            <MenuContainer/>
             <Card.Root className={styles.contentContainer}>
                 <Card.Header className={styles.contentContainerHeader}>My tasks</Card.Header>
                 <Card.Body className={styles.contentContainerBody}>

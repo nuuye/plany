@@ -10,8 +10,7 @@ import {
 import { useState } from "react";
 
 interface menuContainerProps {
-    tasks: Task[];
-    setTasks: React.Dispatch<React.SetStateAction<Task[]>>;
+
 }
 
 const colors = ["teal", "red", "coral", "gold", "lavender", "pink"];
@@ -21,7 +20,7 @@ type Task = {
     color: string;
 };
 
-export default function MenuContainer({ tasks, setTasks }: menuContainerProps) {
+export default function MenuContainer({ }: menuContainerProps) {
     const [color, setColor] = useState<string>("");
     const [taskDescription, setTaskDescription] = useState<string>("");
 
@@ -40,7 +39,6 @@ export default function MenuContainer({ tasks, setTasks }: menuContainerProps) {
                 console.error("Error while saving task:", errorData.message || response.statusText);
                 return;
             } else {
-                setTasks((prevTasks) => [...prevTasks, { description: taskDescription, color: color }]);
                 console.log("task created and save in database");
             }
         } catch (error) {
