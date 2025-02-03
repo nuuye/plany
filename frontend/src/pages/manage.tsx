@@ -8,6 +8,7 @@ import { useEffect, useState } from "react";
 type Task = {
     description: string;
     color: string;
+    _id: string;
 };
 
 export default function Manage() {
@@ -15,6 +16,10 @@ export default function Manage() {
 
     useEffect(() => {
         retrieveTasks();
+    }, []);
+
+    useEffect(() => {
+        console.log(tasks);
     }, [tasks]);
 
     const retrieveTasks = async () => {
@@ -30,6 +35,20 @@ export default function Manage() {
             console.log(error);
         }
     };
+
+    const deleteTask = async (id: string) => {
+        try {
+            const response = await fetch(`http://localhost:8000/api/management/deleteOneTask/${id}`, {
+                method: "DELETE",
+            });
+            if (response.ok) {
+                setTasks((prevTasks) => prevTasks.filter((task) => task._id != id));
+                console.log("task deleted");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
     return (
         <div className={styles.mainContainer}>
             <Boxes allowColors={false} />
@@ -39,7 +58,12 @@ export default function Manage() {
                 <Card.Body className={styles.contentContainerBody}>
                     <div className={styles.tasksContainer}>
                         {tasks.map((task, index) => (
-                            <Task key={index} description={task.description} color={task.color} />
+                            <Task
+                                key={index}
+                                description={task.description}
+                                color={task.color}
+                                onDelete={() => deleteTask(task._id)}
+                            />
                         ))}
                     </div>
                 </Card.Body>

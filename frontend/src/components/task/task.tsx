@@ -4,9 +4,10 @@ import styles from "./task.module.scss";
 interface taskProps {
     description?: string;
     color?: string;
+    onDelete?: () => void;
 }
 
-export default function Task({ description, color }: taskProps) {
+export default function Task({ description, color, onDelete }: taskProps) {
     const colorPaletteConverter = (color): { color; background } => {
         switch (color) {
             case "red":
@@ -31,6 +32,7 @@ export default function Task({ description, color }: taskProps) {
             colorPalette={colorPaletteConverter(color).color}
             variant="surface"
             customBackgroundColor={colorPaletteConverter(color).background}
+            onDelete={onDelete}
         />
     );
 }
