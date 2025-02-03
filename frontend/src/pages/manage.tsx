@@ -15,7 +15,7 @@ export default function Manage() {
 
     useEffect(() => {
         retrieveTasks();
-    }, []);
+    }, [tasks]);
 
     const retrieveTasks = async () => {
         try {
@@ -33,7 +33,7 @@ export default function Manage() {
     return (
         <div className={styles.mainContainer}>
             <Boxes allowColors={false} />
-            <MenuContainer/>
+            <MenuContainer tasks={tasks} setTasks={setTasks} />
             <Card.Root className={styles.contentContainer}>
                 <Card.Header className={styles.contentContainerHeader}>My tasks</Card.Header>
                 <Card.Body className={styles.contentContainerBody}>
