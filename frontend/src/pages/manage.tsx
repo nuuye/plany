@@ -5,22 +5,50 @@ import Task from "../components/task/task";
 import MenuContainer from "../components/menuContainer/menuContainer";
 import { useEffect, useState } from "react";
 
-type Task = {
+interface Task {
     description: string;
     color: string;
     _id: string;
-};
+}
+interface UserType {
+    name: string;
+    email: string;
+}
 
 export default function Manage() {
     const [tasks, setTasks] = useState<Task[]>([]);
+    const [user, setUser] = useState<UserType>();
+
+    // Ensure localStorage is only accessed in the client-side environment (not during server-side rendering)
+    const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
 
     useEffect(() => {
         retrieveTasks();
+        retrieveUser();
+        console.log("userID: ", userId);
     }, []);
 
     useEffect(() => {
         console.log(tasks);
     }, [tasks]);
+
+    const retrieveUser = async () => {
+        try {
+            const response = await fetch(`http://localhost:8000/api/auth/getUser/${userId}`, {
+                method: "GET",
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                console.log("userData: ", data);
+                setUser(data);
+            } else {
+                console.error("Failed to fetch user");
+            }
+        } catch (error) {
+            console.error("Error fetching user:", error);
+        }
+    };
 
     const retrieveTasks = async () => {
         try {
@@ -52,6 +80,9 @@ export default function Manage() {
     return (
         <div className={styles.mainContainer}>
             <Boxes allowColors={false} />
+            <div className={styles.headerContainer}>
+                <span>💠 Welcome back {user ? `, ${user.name}! ` : ''}</span>
+            </div>
             <MenuContainer tasks={tasks} setTasks={setTasks} />
             <Card.Root className={styles.contentContainer}>
                 <Card.Header className={styles.contentContainerHeader}>My tasks</Card.Header>

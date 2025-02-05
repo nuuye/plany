@@ -5,6 +5,7 @@ import { Field } from "@/components/ui/field";
 import { RiArrowRightLine } from "react-icons/ri";
 import { Boxes } from "../components/background/background-boxes";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useRouter } from "next/router";
 
 enum AccountStatus {
     START = -1, //home page
@@ -29,6 +30,7 @@ type EmailFormValues = {
 };
 
 export default function Home() {
+    const router = useRouter();
     const [email, setEmail] = useState<string>("");
     const [hasAccount, setHasAccount] = useState<AccountStatus>(AccountStatus.START);
 
@@ -80,7 +82,12 @@ export default function Home() {
                 },
                 body: JSON.stringify(credentials),
             });
+            const data = await response.json();
+
             if (response.ok) {
+                console.log(data);
+                localStorage.setItem("userId", data.userId);
+                router.push("/manage");
                 console.log("response is ok");
                 return true;
             } else {

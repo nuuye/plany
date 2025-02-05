@@ -15,8 +15,7 @@ exports.getTasks = (req, res, next) => {
 }
 
 exports.deleteOneTask = (req, res, next) => {
-    console.log(req.params._id);
-    Task.deleteOne({ _id: req.params._id })
+    Task.deleteOne({ _id: req.params.id })
         .then(() => res.status(200).json({ message: "Task deleted!" }))
         .catch((error) => res.status(400).json({ error }));
 };

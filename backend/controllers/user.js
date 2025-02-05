@@ -55,3 +55,17 @@ exports.emailCheck = (req, res, next) => {
             res.status(500).json({ err });
         });
 };
+
+exports.getUser = (req, res, next) => {
+    User.findById(req.params.id)
+        .then((user) => {
+            if (user) {
+                res.status(200).json(user);
+            } else {
+                res.status(404).json({ message: "user not found" });
+            }
+        })
+        .catch((error) => {
+            res.status(404).json({ error });
+        });
+};
