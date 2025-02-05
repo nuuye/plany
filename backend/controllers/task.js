@@ -4,7 +4,7 @@ exports.createTask = (req, res, next) => {
     delete req.body._id;
     const task = new Task(req.body);
     task.save()
-        .then(() => res.status(201).json({ message: "Task saved!" }))
+        .then(() => res.status(201).json(task))
         .catch((error) => res.status(400).json({ error }));
 };
 

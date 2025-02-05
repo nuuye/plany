@@ -8,6 +8,7 @@ import {
     ColorPickerValueText,
 } from "@/components/ui/color-picker";
 import { useState } from "react";
+import { CgLogOut } from "react-icons/cg";
 
 interface menuContainerProps {
     tasks: Task[];
@@ -17,6 +18,7 @@ interface menuContainerProps {
 const colors = ["teal", "red", "coral", "gold", "lavender", "pink"];
 
 type Task = {
+    _id: string;
     description: string;
     color: string;
 };
@@ -40,7 +42,11 @@ export default function MenuContainer({ tasks, setTasks }: menuContainerProps) {
                 console.error("Error while saving task:", errorData.message || response.statusText);
                 return;
             } else {
-                setTasks((prevTasks) => [...prevTasks, { description: taskDescription, color: color }]);
+                const newTask = await response.json(); //retrieving task to assign id
+                setTasks((prevTasks) => [
+                    ...prevTasks,
+                    { _id: newTask._id, description: taskDescription, color: color },
+                ]);
                 console.log("task created and save in database");
             }
         } catch (error) {
@@ -93,7 +99,21 @@ export default function MenuContainer({ tasks, setTasks }: menuContainerProps) {
                     </svg>
                 </Button>
             </Card.Body>
-            <Card.Footer></Card.Footer>
+            <Card.Footer className={styles.footerContainer}>
+                <Button variant="ghost">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16">
+                        <path
+                            fill="#ffffff"
+                            d="M12 1c1.1 0 2 .895 2 2v9c0 1.1-.895 2-2 2H9.5a.5.5 0 0 1 0-1H12a1 1 0 0 0 1-1V3a1 1 0 0 0-1-1H9.5a.5.5 0 0 1 0-1z"
+                        />
+                        <path
+                            fill="#ffffff"
+                            d="M4.15 4.15a.5.5 0 0 1 .707.707l-2.15 2.15h6.79a.5.5 0 0 1 0 1h-6.79l2.15 2.15a.5.5 0 0 1-.707.707l-3-3a.5.5 0 0 1 0-.707l3-3z"
+                        />
+                    </svg>
+                    <span>Log out</span>
+                </Button>
+            </Card.Footer>
         </Card.Root>
     );
 }
