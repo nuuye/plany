@@ -77,15 +77,46 @@ export default function Manage() {
             console.log(error);
         }
     };
+
+    const deleteAll = async () => {
+        try {
+            const response = await fetch(`http://localhost:8000/api/management/deleteAll`, {
+                method: "DELETE",
+            });
+            if (response.ok) {
+                setTasks([]);
+                console.log("task deleted");
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
     return (
         <div className={styles.mainContainer}>
             <Boxes allowColors={false} />
             <div className={styles.headerContainer}>
-                <span>💠 Welcome back {user ? `, ${user.name}! ` : ''}</span>
+                <span>💠 Welcome back{user ? `, ${user.name}! ` : ""}</span>
             </div>
             <MenuContainer tasks={tasks} setTasks={setTasks} />
             <Card.Root className={styles.contentContainer}>
-                <Card.Header className={styles.contentContainerHeader}>My tasks</Card.Header>
+                <Card.Header className={styles.contentContainerHeader}>
+                    <span>My tasks</span>
+                    <Button
+                        onClick={() => deleteAll()}
+                        colorPalette="red"
+                        className={styles.deleteAllButton}
+                        variant="solid"
+                    >
+                        Delete all tasks
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                            <path
+                                fill="#ffffff"
+                                d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"
+                            />
+                        </svg>
+                    </Button>
+                </Card.Header>
                 <Card.Body className={styles.contentContainerBody}>
                     <div className={styles.tasksContainer}>
                         {tasks.map((task, index) => (

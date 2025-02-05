@@ -28,7 +28,15 @@
         grid-column: 2 / 5;
         .contentContainerHeader {
             display: flex;
-            font-weight: bold;
+            align-items: center;
+            justify-content: space-between;
+            flex-direction: row;
+            span {
+                font-weight: bold;
+            }
+            .deleteAllButton {
+                background-color: #ff0000a3;
+            }
             .createButton {
                 width: 180px;
                 border-radius: 20px;
