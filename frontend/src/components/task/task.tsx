@@ -5,9 +5,11 @@ interface taskProps {
     description?: string;
     color?: string;
     onDelete?: () => void;
+    onModifying?: () => void;
+    isModifying?: boolean
 }
 
-export default function Task({ description, color, onDelete }: taskProps) {
+export default function Task({ description, color, onDelete, onModifying, isModifying }: taskProps) {
     const colorPaletteConverter = (color): { color; background } => {
         switch (color) {
             case "red":
@@ -33,6 +35,8 @@ export default function Task({ description, color, onDelete }: taskProps) {
             variant="surface"
             customBackgroundColor={colorPaletteConverter(color).background}
             onDelete={onDelete}
+            onModifying={onModifying}
+            isModifying={isModifying}
         />
     );
 }

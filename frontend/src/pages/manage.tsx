@@ -18,7 +18,7 @@ interface UserType {
 export default function Manage() {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [user, setUser] = useState<UserType>();
-
+    const [modifyingTaskId, setModifyingTaskId] = useState<string | null>(null);
     // Ensure localStorage is only accessed in the client-side environment (not during server-side rendering)
     const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
 
@@ -31,6 +31,10 @@ export default function Manage() {
     useEffect(() => {
         console.log(tasks);
     }, [tasks]);
+
+    const toggleModifyingTask = (taskId: string) => {
+        setModifyingTaskId((prevId) => (prevId === taskId ? null : taskId));
+    };
 
     const retrieveUser = async () => {
         try {
@@ -121,10 +125,12 @@ export default function Manage() {
                     <div className={styles.tasksContainer}>
                         {tasks.map((task, index) => (
                             <Task
-                                key={index}
+                                key={task._id}
                                 description={task.description}
                                 color={task.color}
                                 onDelete={() => deleteTask(task._id)}
+                                onModifying={() => toggleModifyingTask(task._id)}
+                                isModifying={modifyingTaskId === task._id}
                             />
                         ))}
                     </div>

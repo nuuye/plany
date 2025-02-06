@@ -1,21 +1,43 @@
 import { CheckboxCard as ChakraCheckboxCard } from "@chakra-ui/react";
 import * as React from "react";
 import styles from "./checkbox-card.module.scss";
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
+import { Input } from "@chakra-ui/react";
 
 export interface CheckboxCardProps extends ChakraCheckboxCard.RootProps {
     label: React.ReactNode;
-    description?: React.ReactNode;
-    addon?: React.ReactNode;
     inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
     customBackgroundColor?: string;
     onDelete?: () => void;
+    isModifying?: boolean;
+    onModifying?: () => void;
 }
 
 export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps>(function CheckboxCard(props, ref) {
-    const { inputProps, label, description, addon, customBackgroundColor = "#0080809c", onDelete, ...rest } = props;
+    const {
+        inputProps,
+        label,
+        customBackgroundColor = "#0080809c",
+        onDelete,
+        isModifying = false,
+        onModifying,
+        ...rest
+    } = props;
     const [isDeleteHover, setIsDeleteHover] = useState<boolean>(false);
     const [isModifyHover, setIsModifyHover] = useState<boolean>(false);
+    
+    const inputRef = useRef<HTMLInputElement>(null);
+
+    const handleModifyClick = () => {
+        if (onModifying) {
+            onModifying();
+        }
+        setTimeout(() => {
+            if (inputRef.current) {
+                inputRef.current.focus();
+            }
+        }, 0);
+    };
 
     return (
         <ChakraCheckboxCard.Root {...rest}>
@@ -24,13 +46,17 @@ export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps
                 <div className={styles.contentContainer}>
                     <div className={styles.checkLabelContainer}>
                         <ChakraCheckboxCard.Indicator />
-                        {label && <ChakraCheckboxCard.Label>{label}</ChakraCheckboxCard.Label>}
-                        {description && <ChakraCheckboxCard.Description>{description}</ChakraCheckboxCard.Description>}
+                        {isModifying ? (
+                            <Input ref={inputRef} size="xs" className={styles.inputContainer} />
+                        ) : (
+                            <ChakraCheckboxCard.Label>{label}</ChakraCheckboxCard.Label>
+                        )}
                     </div>
                     <div className={styles.iconContainer}>
                         <svg
                             onMouseEnter={() => setIsModifyHover(true)}
                             onMouseLeave={() => setIsModifyHover(false)}
+                            onClick={handleModifyClick}
                             xmlns="http://www.w3.org/2000/svg"
                             width="20"
                             height="20"
@@ -58,7 +84,6 @@ export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps
                     </div>
                 </div>
             </ChakraCheckboxCard.Control>
-            {addon && <ChakraCheckboxCard.Addon>{addon}</ChakraCheckboxCard.Addon>}
         </ChakraCheckboxCard.Root>
     );
 });

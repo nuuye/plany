@@ -11,8 +11,12 @@
                 cursor: pointer;
             }
         }
+        .textArea {
+            min-height: 65px;
+            max-height: 150px;
+        }
     }
-    .footerContainer{
+    .footerContainer {
         display: flex;
         align-items: center;
     }

@@ -26,6 +26,7 @@ type Task = {
 export default function MenuContainer({ tasks, setTasks }: menuContainerProps) {
     const [color, setColor] = useState<string>("");
     const [taskDescription, setTaskDescription] = useState<string>("");
+    const [textAreaText, setTextAreaText] = useState<string>("");
 
     const createTask = async () => {
         try {
@@ -47,6 +48,7 @@ export default function MenuContainer({ tasks, setTasks }: menuContainerProps) {
                     ...prevTasks,
                     { _id: newTask._id, description: taskDescription, color: color },
                 ]);
+                setTextAreaText("");
                 console.log("task created and save in database");
             }
         } catch (error) {
@@ -60,7 +62,15 @@ export default function MenuContainer({ tasks, setTasks }: menuContainerProps) {
             <Card.Body className={styles.menuBodyContainer}>
                 <Field.Root>
                     <Field.Label>Task description</Field.Label>
-                    <Textarea onChange={(e) => setTaskDescription(e.target.value)} placeholder="description" />
+                    <Textarea
+                        className={styles.textArea}
+                        value={textAreaText}
+                        onChange={(e) => {
+                            setTaskDescription(e.target.value);
+                            setTextAreaText(e.target.value);
+                        }}
+                        placeholder="description"
+                    />
                 </Field.Root>
 
                 <ColorPickerRoot className={styles.colorContainer}>
