@@ -11,6 +11,7 @@ export interface CheckboxCardProps extends ChakraCheckboxCard.RootProps {
     onDelete?: () => void;
     isModifying?: boolean;
     onModifying?: () => void;
+    onLabelChange?: (newLabel: string) => void;
 }
 
 export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps>(function CheckboxCard(props, ref) {
@@ -21,23 +22,34 @@ export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps
         onDelete,
         isModifying = false,
         onModifying,
+        onLabelChange,
         ...rest
     } = props;
     const [isDeleteHover, setIsDeleteHover] = useState<boolean>(false);
     const [isModifyHover, setIsModifyHover] = useState<boolean>(false);
-    
+    const [inputValue, setInputValue] = useState<string>(label as string);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const handleModifyClick = () => {
-        if (onModifying) {
-            onModifying();
-        }
-        setTimeout(() => {
-            if (inputRef.current) {
-                inputRef.current.focus();
+        if (isModifying) {
+            if (onLabelChange && inputValue !== label) {
+                onLabelChange(inputValue);
             }
-        }, 0);
+            if (onModifying) {
+                onModifying();
+            }
+        } else {
+            if (onModifying) {
+                onModifying();
+            }
+            setTimeout(() => {
+                if (inputRef.current) {
+                    inputRef.current.focus();
+                }
+            }, 0);
+        }
     };
+
 
     return (
         <ChakraCheckboxCard.Root {...rest}>
@@ -47,7 +59,13 @@ export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps
                     <div className={styles.checkLabelContainer}>
                         <ChakraCheckboxCard.Indicator />
                         {isModifying ? (
-                            <Input ref={inputRef} size="xs" className={styles.inputContainer} />
+                            <Input
+                                ref={inputRef}
+                                size="xs"
+                                className={styles.inputContainer}
+                                value={inputValue}
+                                onChange={(e) => setInputValue(e.target.value)}
+                            />
                         ) : (
                             <ChakraCheckboxCard.Label>{label}</ChakraCheckboxCard.Label>
                         )}

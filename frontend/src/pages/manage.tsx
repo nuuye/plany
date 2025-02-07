@@ -131,6 +131,7 @@ export default function Manage() {
                                 onDelete={() => deleteTask(task._id)}
                                 onModifying={() => toggleModifyingTask(task._id)}
                                 isModifying={modifyingTaskId === task._id}
+                                taskId={task._id}
                             />
                         ))}
                     </div>

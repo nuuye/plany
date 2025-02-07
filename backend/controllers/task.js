@@ -10,9 +10,9 @@ exports.createTask = (req, res, next) => {
 
 exports.getTasks = (req, res, next) => {
     Task.find({})
-    .then((tasks) => res.status(200).json(tasks))
-    .catch((error) => res.status(500).json({ error }));
-}
+        .then((tasks) => res.status(200).json(tasks))
+        .catch((error) => res.status(500).json({ error }));
+};
 
 exports.deleteOneTask = (req, res, next) => {
     Task.deleteOne({ _id: req.params.id })
@@ -27,7 +27,7 @@ exports.deleteAll = (req, res, next) => {
 };
 
 exports.modifyTask = (req, res, next) => {
-    Task.updateOne({ _id: req.params._id }, { ...req.body, _id: req.params.id })
+    Task.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
         .then(() => res.status(200).json({ message: "Task modified!" }))
         .catch((error) => res.status(400).json({ error }));
 };
