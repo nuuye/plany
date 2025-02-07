@@ -43,10 +43,16 @@
             }
         }
         .contentContainerBody {
+            display: flex;
             .tasksContainer {
                 display: flex;
                 flex-direction: column;
                 gap: 10px;
+                overflow-y: auto;
+                max-height: 500px;
+                padding-right: 10px;
+                scrollbar-width: thin; /* Pour Firefox */
+                scrollbar-color: darkgray transparent; /* Pour Firefox */
             }
         }
     }

@@ -50,7 +50,6 @@ export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps
         }
     };
 
-
     return (
         <ChakraCheckboxCard.Root {...rest}>
             <ChakraCheckboxCard.HiddenInput ref={ref} {...inputProps} />
@@ -72,9 +71,12 @@ export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps
                     </div>
                     <div className={styles.iconContainer}>
                         <svg
-                            onMouseEnter={() => setIsModifyHover(true)}
-                            onMouseLeave={() => setIsModifyHover(false)}
-                            onClick={handleModifyClick}
+                            onMouseEnter={() => setIsModifyHover(!isModifyHover)}
+                            onMouseLeave={() => setIsModifyHover(!isModifyHover)}
+                            onClick={() => {
+                                handleModifyClick();
+                                setIsModifyHover(!isModifyHover);
+                            }}
                             xmlns="http://www.w3.org/2000/svg"
                             width="20"
                             height="20"

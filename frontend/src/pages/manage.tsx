@@ -3,7 +3,7 @@ import { Button, Card, Input, Stack } from "@chakra-ui/react";
 import styles from "./manage.module.scss";
 import Task from "../components/task/task";
 import MenuContainer from "../components/menuContainer/menuContainer";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Task {
     description: string;
@@ -21,7 +21,7 @@ export default function Manage() {
     const [modifyingTaskId, setModifyingTaskId] = useState<string | null>(null);
     // Ensure localStorage is only accessed in the client-side environment (not during server-side rendering)
     const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
-
+    
     useEffect(() => {
         retrieveTasks();
         retrieveUser();
