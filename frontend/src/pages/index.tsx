@@ -87,6 +87,8 @@ export default function Home() {
             if (response.ok) {
                 console.log(data);
                 localStorage.setItem("userId", data.userId);
+                const token = data.token;
+                localStorage.setItem("token", token);
                 router.push("/manage");
                 console.log("response is ok");
                 return true;

@@ -29,12 +29,22 @@ export default function MenuContainer({ tasks, setTasks }: menuContainerProps) {
 
     const createTask = async () => {
         try {
+            const token = localStorage.getItem("token"); // Récupérez le token depuis le localStorage
+            if (!token) {
+                console.error("Token not found in localStorage");
+                return;
+            }
+
             const response = await fetch("http://localhost:8000/api/management/createTask", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`, // Ajoutez le token dans l'en-tête
                 },
-                body: JSON.stringify({ description: taskDescription, color: color }),
+                body: JSON.stringify({
+                    description: taskDescription,
+                    color: color,
+                }),
             });
 
             if (!response.ok) {

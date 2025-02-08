@@ -1,8 +1,10 @@
 const Task = require("../models/task");
 
 exports.createTask = (req, res, next) => {
+    console.log("createTask req body: ", req.body);
     delete req.body._id;
-    const task = new Task(req.body);
+    delete req.body._userId;
+    const task = new Task({ ...req.body, userId: req.auth.userId });
     task.save()
         .then(() => res.status(201).json(task))
         .catch((error) => res.status(400).json({ error }));
@@ -27,7 +29,16 @@ exports.deleteAll = (req, res, next) => {
 };
 
 exports.modifyTask = (req, res, next) => {
-    Task.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
-        .then(() => res.status(200).json({ message: "Task modified!" }))
+    delete req.body.userId;
+    Task.findOne({ _id: req.params.id })
+        .then((task) => {
+            if (task.userId != req.auth.userId) {
+                res.status(401).json({ message: "Not authorized" });
+            } else {
+                Task.updateOne({ _id: req.params.id }, { ...req.body, _id: req.params.id })
+                    .then(() => res.status(200).json({ message: "Task modified!" }))
+                    .catch((error) => res.status(401).json({ error }));
+            }
+        })
         .catch((error) => res.status(400).json({ error }));
 };

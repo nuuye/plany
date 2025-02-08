@@ -27,7 +27,11 @@ exports.login = (req, res, next) => {
                     if (result) {
                         res.status(200).json({
                             userId: user._id,
-                            token: "TOKEN",
+                            token: jwt.sign(
+                                { userId: user._id }, //on inclut l'user ID dans le payload
+                                "RANDOM_TOKEN_SECRET", //string secrète pour déchiffrer le jwt
+                                { expiresIn: "24h" } //expiration date du token
+                            ),
                         });
                     } else {
                         res.status(403).json({ message: "Incorrect credentials" });

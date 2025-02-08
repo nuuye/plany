@@ -47,10 +47,16 @@ export default function Task({
         }
 
         try {
+            const token = localStorage.getItem("token"); // Récupérez le token depuis le localStorage
+            if (!token) {
+                console.error("Token not found in localStorage");
+                return;
+            }
             const response = await fetch(`http://localhost:8000/api/management/modifyTask/${taskId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
                 },
                 body: JSON.stringify({ description: newLabel }),
             });

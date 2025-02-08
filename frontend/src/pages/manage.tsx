@@ -21,7 +21,7 @@ export default function Manage() {
     const [modifyingTaskId, setModifyingTaskId] = useState<string | null>(null);
     // Ensure localStorage is only accessed in the client-side environment (not during server-side rendering)
     const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
-    
+
     useEffect(() => {
         retrieveTasks();
         retrieveUser();
@@ -56,15 +56,30 @@ export default function Manage() {
 
     const retrieveTasks = async () => {
         try {
-            const response = await fetch("http://localhost:8000/api/management/getTasks");
-            if (!response.ok) {
-                console.error("Error while retrieving tasks");
+            const token = localStorage.getItem("token"); // Récupérez le token depuis le localStorage
+            if (!token) {
+                console.error("Token not found in localStorage");
                 return;
             }
+
+            const response = await fetch("http://localhost:8000/api/management/getTasks", {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error("Error while retrieving tasks:", errorData.message || response.statusText);
+                return;
+            }
+
             const data = await response.json();
             setTasks(data);
         } catch (error) {
-            console.log(error);
+            console.error("Network error:", error);
         }
     };
 
