@@ -85,8 +85,17 @@ export default function Manage() {
 
     const deleteTask = async (id: string) => {
         try {
+            const token = localStorage.getItem("token"); // Récupérez le token depuis le localStorage
+            if (!token) {
+                console.error("Token not found in localStorage");
+                return;
+            }
             const response = await fetch(`http://localhost:8000/api/management/deleteOneTask/${id}`, {
                 method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
             });
             if (response.ok) {
                 setTasks((prevTasks) => prevTasks.filter((task) => task._id != id));
@@ -99,8 +108,17 @@ export default function Manage() {
 
     const deleteAll = async () => {
         try {
+            const token = localStorage.getItem("token"); // Récupérez le token depuis le localStorage
+            if (!token) {
+                console.error("Token not found in localStorage");
+                return;
+            }
             const response = await fetch(`http://localhost:8000/api/management/deleteAll`, {
                 method: "DELETE",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
             });
             if (response.ok) {
                 setTasks([]);

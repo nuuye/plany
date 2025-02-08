@@ -17,9 +17,17 @@ exports.getTasks = (req, res, next) => {
 };
 
 exports.deleteOneTask = (req, res, next) => {
-    Task.deleteOne({ _id: req.params.id })
-        .then(() => res.status(200).json({ message: "Task deleted!" }))
-        .catch((error) => res.status(400).json({ error }));
+    Task.findOne({ _id: req.params.id })
+        .then((task) => {
+            if (task.userId != req.auth.userId) {
+                res.status(401).json({ message: "Not authorized" });
+            } else {
+                Task.deleteOne({ _id: req.params.id })
+                    .then(() => res.status(200).json({ message: "Task deleted!" }))
+                    .catch((error) => res.status(401).json({ error }));
+            }
+        })
+        .catch((error) => res.status(500).json({ error }));
 };
 
 exports.deleteAll = (req, res, next) => {
