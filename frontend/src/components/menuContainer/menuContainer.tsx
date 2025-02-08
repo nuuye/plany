@@ -1,4 +1,5 @@
-import { Card, Field, Textarea, Button } from "@chakra-ui/react";
+"use client";
+import { Card, Field, Textarea, Button, Stack } from "@chakra-ui/react";
 import styles from "./menuContainer.module.scss";
 import {
     ColorPickerLabel,
@@ -9,6 +10,7 @@ import {
 } from "@/components/ui/color-picker";
 import { useState } from "react";
 import { CgLogOut } from "react-icons/cg";
+import { useRouter } from "next/router";
 
 interface menuContainerProps {
     tasks: Task[];
@@ -24,8 +26,10 @@ type Task = {
 };
 
 export default function MenuContainer({ tasks, setTasks }: menuContainerProps) {
+    const router = useRouter();
     const [color, setColor] = useState<string>("");
     const [taskDescription, setTaskDescription] = useState<string>("");
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const createTask = async () => {
         try {
@@ -62,6 +66,20 @@ export default function MenuContainer({ tasks, setTasks }: menuContainerProps) {
             }
         } catch (error) {
             console.error("Network error:", error);
+        }
+    };
+
+
+    const logout = () => {
+        try {
+            setIsLoading(!isLoading);
+            // Supprimez le token du localStorage
+            localStorage.removeItem("token");
+            console.log("Logout successful, token removed");
+            // Redirect user
+            router.push("/");
+        } catch (error) {
+            console.error("Error during logout:", error);
         }
     };
 
@@ -118,7 +136,7 @@ export default function MenuContainer({ tasks, setTasks }: menuContainerProps) {
                 </Button>
             </Card.Body>
             <Card.Footer className={styles.footerContainer}>
-                <Button variant="ghost">
+                <Button loading={isLoading} variant="ghost" onClick={() => logout()}>
                     <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 16 16">
                         <path
                             fill="#ffffff"

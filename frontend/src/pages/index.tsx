@@ -33,6 +33,7 @@ export default function Home() {
     const router = useRouter();
     const [email, setEmail] = useState<string>("");
     const [hasAccount, setHasAccount] = useState<AccountStatus>(AccountStatus.START);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
 
     //API call to create an account
     const createAccount = async (data: SignupFormValues): Promise<void> => {
@@ -133,6 +134,7 @@ export default function Home() {
     const onSubmitLogin: SubmitHandler<LoginFormValues> = (data) => {
         console.log(data);
         if (isLoginSuccessful(data)) {
+            setIsLoading(!isLoading);
             console.log("success");
         } else {
             console.log("error");
@@ -242,7 +244,7 @@ export default function Home() {
                             >
                                 Cancel
                             </Button>
-                            <Button type="submit" colorPalette="teal" variant="solid">
+                            <Button loading={isLoading} type="submit" colorPalette="teal" variant="solid">
                                 Log in
                             </Button>
                         </Card.Footer>
