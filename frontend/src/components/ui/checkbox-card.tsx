@@ -3,6 +3,7 @@ import * as React from "react";
 import styles from "./checkbox-card.module.scss";
 import { useState, useRef, useEffect } from "react";
 import { Input } from "@chakra-ui/react";
+import { Checkbox } from "@/components/ui/checkbox";
 
 export interface CheckboxCardProps extends ChakraCheckboxCard.RootProps {
     label: React.ReactNode;
@@ -12,6 +13,8 @@ export interface CheckboxCardProps extends ChakraCheckboxCard.RootProps {
     isModifying?: boolean;
     onModifying?: () => void;
     onLabelChange?: (newLabel: string) => void;
+    isChecked?: boolean;
+    onCheck?: (newValue: boolean) => void;
 }
 
 export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps>(function CheckboxCard(props, ref) {
@@ -23,11 +26,14 @@ export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps
         isModifying = false,
         onModifying,
         onLabelChange,
+        isChecked = false,
+        onCheck,
         ...rest
     } = props;
     const [isDeleteHover, setIsDeleteHover] = useState<boolean>(false);
     const [isModifyHover, setIsModifyHover] = useState<boolean>(false);
     const [inputValue, setInputValue] = useState<string>(label as string);
+
     const inputRef = useRef<HTMLInputElement>(null);
 
     const handleModifyClick = () => {
@@ -49,14 +55,21 @@ export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps
             }, 0);
         }
     };
-
     return (
         <ChakraCheckboxCard.Root {...rest}>
             <ChakraCheckboxCard.HiddenInput ref={ref} {...inputProps} />
-            <ChakraCheckboxCard.Control backgroundColor={customBackgroundColor} className={styles.taskContainer}>
+            <ChakraCheckboxCard.Control
+                onClick={() => {
+                    const newState = !isChecked;
+                    console.log("Checkbox clicked, new state:", newState);
+                    if (onCheck) onCheck(newState);
+                }}
+                backgroundColor={customBackgroundColor}
+                className={styles.taskContainer}
+            >
                 <div className={styles.contentContainer}>
                     <div className={styles.checkLabelContainer}>
-                        <ChakraCheckboxCard.Indicator />
+                        <Checkbox checked={isChecked} onCheckedChange={(e) => onCheck(!!e.checked)} />
                         {isModifying ? (
                             <Input
                                 ref={inputRef}

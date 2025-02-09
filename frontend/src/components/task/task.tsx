@@ -10,6 +10,9 @@ interface TaskProps {
     isModifying?: boolean;
     onLabelChange?: (newLabel: string) => void;
     taskId: string;
+    onCheck?: () => void;
+    isChecked?: boolean;
+    onCheckChange?: (checkboxState: boolean) => void;
 }
 
 export default function Task({
@@ -20,8 +23,12 @@ export default function Task({
     isModifying,
     onLabelChange,
     taskId,
+    isChecked: initialIsChecked,
+    onCheck,
+    onCheckChange,
 }: TaskProps) {
     const [label, setLabel] = useState(description);
+    const [isChecked, setIsChecked] = useState(initialIsChecked);
 
     const colorPaletteConverter = (color): { color; background } => {
         switch (color) {
@@ -30,7 +37,7 @@ export default function Task({
             case "coral":
                 return { color: "orange", background: "#ff7f509c" };
             case "gold":
-                return { color: "yellow", background: "#ffd7009c" };
+                return { color: "yellow", background: "#ffce00c9" };
             case "lavender":
                 return { color: "purple", background: "#e6e6fa9c" };
             case "pink":
@@ -71,6 +78,41 @@ export default function Task({
         }
     };
 
+    const handleCheckChange = async (checked: boolean) => {
+        console.log("handleCheckChange called! Checked value:", checked);
+
+        if (onCheckChange) {
+            onCheckChange(checked);
+        }
+
+        try {
+            const token = localStorage.getItem("token");
+            if (!token) {
+                console.error("Token not found in localStorage");
+                return;
+            }
+            console.log("Updating task:", taskId, "New isChecked value:", checked);
+
+            const response = await fetch(`http://localhost:8000/api/management/modifyTask/${taskId}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ isChecked: checked }),
+            });
+
+            if (response.ok) {
+                console.log("Task check status updated successfully");
+                setIsChecked(checked);
+            } else {
+                console.error("Failed to update task check status");
+            }
+        } catch (error) {
+            console.error("Error updating task check status:", error);
+        }
+    };
+
     return (
         <CheckboxCard
             className={styles.taskContainer}
@@ -82,6 +124,11 @@ export default function Task({
             onModifying={onModifying}
             isModifying={isModifying}
             onLabelChange={handleLabelChange}
+            isChecked={isChecked}
+            onCheck={(newValue) => {
+                console.log("Checkbox clicked! New value:", newValue);
+                handleCheckChange(newValue);
+            }}
         />
     );
 }

@@ -9,6 +9,7 @@ interface Task {
     description: string;
     color: string;
     _id: string;
+    isChecked: boolean;
 }
 interface UserType {
     name: string;
@@ -34,6 +35,12 @@ export default function Manage() {
 
     const toggleModifyingTask = (taskId: string) => {
         setModifyingTaskId((prevId) => (prevId === taskId ? null : taskId));
+    };
+
+    const toggleCheckingTask = (taskId: string) => {
+        setTasks((prevTasks) =>
+            prevTasks.map((task) => (task._id === taskId ? { ...task, isChecked: !task.isChecked } : task))
+        );
     };
 
     const retrieveUser = async () => {
@@ -77,6 +84,7 @@ export default function Manage() {
             }
 
             const data = await response.json();
+            console.log("Retrieved tasks:", data);
             setTasks(data);
         } catch (error) {
             console.error("Network error:", error);
@@ -138,7 +146,7 @@ export default function Manage() {
             <MenuContainer tasks={tasks} setTasks={setTasks} />
             <Card.Root className={styles.contentContainer}>
                 <Card.Header className={styles.contentContainerHeader}>
-                    <span>My tasks {tasks.length > 0 ? `(${tasks.length})` : ''}</span>
+                    <span>My tasks {tasks.length > 0 ? `(${tasks.length})` : ""}</span>
                     <Button
                         onClick={() => deleteAll()}
                         colorPalette="red"
@@ -165,6 +173,8 @@ export default function Manage() {
                                 onModifying={() => toggleModifyingTask(task._id)}
                                 isModifying={modifyingTaskId === task._id}
                                 taskId={task._id}
+                                isChecked={task.isChecked}
+                                onCheck={() => toggleCheckingTask(task._id)}
                             />
                         ))}
                     </div>

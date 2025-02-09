@@ -23,6 +23,7 @@ type Task = {
     _id: string;
     description: string;
     color: string;
+    isChecked: boolean;
 };
 
 export default function MenuContainer({ tasks, setTasks }: menuContainerProps) {
@@ -48,6 +49,7 @@ export default function MenuContainer({ tasks, setTasks }: menuContainerProps) {
                 body: JSON.stringify({
                     description: taskDescription,
                     color: color,
+                    isChecked: false,
                 }),
             });
 
@@ -59,7 +61,7 @@ export default function MenuContainer({ tasks, setTasks }: menuContainerProps) {
                 const newTask = await response.json(); //retrieving task to assign id
                 setTasks((prevTasks) => [
                     ...prevTasks,
-                    { _id: newTask._id, description: taskDescription, color: color },
+                    { _id: newTask._id, description: taskDescription, color: color, isChecked: false},
                 ]);
                 setTaskDescription("");
                 console.log("task created and save in database");
