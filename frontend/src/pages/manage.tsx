@@ -138,7 +138,7 @@ export default function Manage() {
             <MenuContainer tasks={tasks} setTasks={setTasks} />
             <Card.Root className={styles.contentContainer}>
                 <Card.Header className={styles.contentContainerHeader}>
-                    <span>My tasks</span>
+                    <span>My tasks {tasks.length > 0 ? `(${tasks.length})` : ''}</span>
                     <Button
                         onClick={() => deleteAll()}
                         colorPalette="red"
