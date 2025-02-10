@@ -1,29 +1,26 @@
-.mainContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.root {
     height: 100%;
-    justify-content: center;
-    gap: 20px;
-    position: relative;
-    h1 {
-        z-index: 1;
-    }
-
-    .loginContainer,
-    .checkContaier,
-    .signupContainer {
-        position: absolute;
-        z-index: 2;
-        min-width: 400px;
-    }
-}
-
-@keyframes fade-in {
-    from {
-        opacity: 0;
-    }
-    to {
-        opacity: 1;
+    .mainContainer {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        position: relative;
+        height: 100%;
+        justify-content: space-around;
+        .descriptionContainer {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: self-start;
+            h1 {
+                z-index: 1;
+            }
+        }
+        .imageContainer {
+            .image {
+                z-index: 1;
+                width: 500px;
+            }
+        }
     }
 }
