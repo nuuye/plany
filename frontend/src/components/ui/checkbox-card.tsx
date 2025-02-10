@@ -69,7 +69,7 @@ export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps
             >
                 <div className={styles.contentContainer}>
                     <div className={styles.checkLabelContainer}>
-                        <Checkbox checked={isChecked} onCheckedChange={(e) => onCheck(!!e.checked)} />
+                        <Checkbox checked={isChecked} onCheckedChange={(e) => onCheck(!!e.checked)} className={styles.checkbox}/>
                         {isModifying ? (
                             <Input
                                 ref={inputRef}
