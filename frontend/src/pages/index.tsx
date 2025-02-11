@@ -12,6 +12,7 @@ import Image from "next/image";
 export default function Home() {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoadingAbout, setIsLoadingAbout] = useState<boolean>(false);
     const [loaded, setLoaded] = useState(false);
 
     return (
@@ -21,10 +22,15 @@ export default function Home() {
                 <div className={styles.sidebar}>
                     <Image className={styles.logo} src={logo} alt="Plany Logo" />
                     <div className={styles.buttonContainer}>
-                        <Button className={styles.button} colorPalette="teal">
-                            Testimonials
-                        </Button>
-                        <Button className={styles.button} colorPalette="teal">
+                        <Button
+                            loading={isLoadingAbout}
+                            className={styles.button}
+                            colorPalette="teal"
+                            onClick={() => {
+                                setIsLoadingAbout(!isLoadingAbout);
+                                router.push("/about");
+                            }}
+                        >
                             About
                         </Button>
                     </div>
