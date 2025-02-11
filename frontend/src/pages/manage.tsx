@@ -69,7 +69,7 @@ export default function Manage() {
                 return;
             }
 
-            const response = await fetch("http://localhost:8000/api/management/getTasks", {
+            const response = await fetch(`http://localhost:8000/api/management/getTasks/${userId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",

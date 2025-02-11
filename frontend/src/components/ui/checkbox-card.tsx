@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 export interface CheckboxCardProps extends ChakraCheckboxCard.RootProps {
     label: React.ReactNode;
     inputProps?: React.InputHTMLAttributes<HTMLInputElement>;
+    color?: string;
     customBackgroundColor?: string;
     onDelete?: () => void;
     isModifying?: boolean;
@@ -21,6 +22,7 @@ export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps
     const {
         inputProps,
         label,
+        color = "#008080",
         customBackgroundColor = "#0080809c",
         onDelete,
         isModifying = false,
@@ -56,7 +58,7 @@ export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps
         }
     };
     return (
-        <ChakraCheckboxCard.Root {...rest}>
+        <ChakraCheckboxCard.Root {...rest} data-state={isChecked ? "checked" : "unchecked"}>
             <ChakraCheckboxCard.HiddenInput ref={ref} {...inputProps} />
             <ChakraCheckboxCard.Control
                 onClick={() => {
@@ -66,10 +68,15 @@ export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps
                 }}
                 backgroundColor={customBackgroundColor}
                 className={styles.taskContainer}
+                data-state={isChecked ? "checked" : "unchecked"}
             >
                 <div className={styles.contentContainer}>
                     <div className={styles.checkLabelContainer}>
-                        <Checkbox checked={isChecked} onCheckedChange={(e) => onCheck(!!e.checked)} className={styles.checkbox}/>
+                        <Checkbox
+                            checked={isChecked}
+                            onCheckedChange={(e) => onCheck(!!e.checked)}
+                            className={styles.checkbox}
+                        />
                         {isModifying ? (
                             <Input
                                 ref={inputRef}

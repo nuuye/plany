@@ -119,6 +119,7 @@ export default function Task({
             label={label}
             colorPalette={colorPaletteConverter(color).color}
             variant="surface"
+            color={color}
             customBackgroundColor={colorPaletteConverter(color).background}
             onDelete={onDelete}
             onModifying={onModifying}

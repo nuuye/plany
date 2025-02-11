@@ -11,7 +11,7 @@ exports.createTask = (req, res, next) => {
 };
 
 exports.getTasks = (req, res, next) => {
-    Task.find({})
+    Task.find({userId: req.params.userId})
         .then((tasks) => res.status(200).json(tasks))
         .catch((error) => res.status(500).json({ error }));
 };
