@@ -6,6 +6,7 @@
     padding: 2rem;
 
     .cardRoot {
+        z-index: 1;
         width: 100%;
         max-width: 600px;
         background: rgb(0 0 0 / 31%);
@@ -14,6 +15,10 @@
         box-shadow: 0 4px 10px rgba(0, 128, 128, 0.3);
         padding: 2rem;
         margin: 10% 20% 10% 20%;
+
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeInUp 0.8s ease-out forwards;
 
         @media (max-width: 768px) {
             margin-left: 5%;
@@ -43,7 +48,7 @@
             margin-bottom: 10px;
         }
 
-        ul{
+        ul {
             li {
                 margin: 5px;
             }
@@ -64,5 +69,17 @@
         a:hover {
             text-decoration: underline;
         }
+    }
+}
+
+// Définition de l'animation
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }

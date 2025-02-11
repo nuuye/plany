@@ -24,9 +24,9 @@ export default function Manage() {
     const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
 
     useEffect(() => {
-        retrieveTasks();
-        retrieveUser();
         console.log("userID: ", userId);
+        retrieveUser();
+        retrieveTasks();
     }, []);
 
     useEffect(() => {
@@ -51,7 +51,7 @@ export default function Manage() {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log("userData: ", data);
+                console.log("user data: ", data);
                 setUser(data);
             } else {
                 console.error("Failed to fetch user");

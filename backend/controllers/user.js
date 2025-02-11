@@ -1,6 +1,7 @@
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
 
 exports.signup = (req, res, next) => {
     //on commence par hasher le password reçu
@@ -13,7 +14,14 @@ exports.signup = (req, res, next) => {
                 password: hash,
             });
             user.save()
-                .then(() => res.status(201).json({ message: "Utilisateur crée !" }))
+                .then(() => res.status(201).json({
+                    userId: user._id,
+                    token: jwt.sign(
+                        { userId: user._id }, //on inclut l'user ID dans le payload
+                        process.env.JWT_SECRET_TOKEN, //string secrète pour déchiffrer le jwt
+                        { expiresIn: "24h" } //expiration date du token
+                    ),
+                }))
                 .catch((error) => res.status(400).json({ error }));
         })
         .catch((error) => res.status(500).json({ error }));
@@ -28,9 +36,9 @@ exports.login = (req, res, next) => {
                         res.status(200).json({
                             userId: user._id,
                             token: jwt.sign(
-                                { userId: user._id }, //on inclut l'user ID dans le payload
-                                "RANDOM_TOKEN_SECRET", //string secrète pour déchiffrer le jwt
-                                { expiresIn: "24h" } //expiration date du token
+                                { userId: user._id }, 
+                                process.env.JWT_SECRET_TOKEN,
+                                { expiresIn: "24h" } 
                             ),
                         });
                     } else {

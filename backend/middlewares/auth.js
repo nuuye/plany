@@ -1,6 +1,5 @@
-//auth.js file in middleware directory
+require("dotenv").config();
 const jwt = require("jsonwebtoken");
-const user = require("../models/user");
 
 //middleware qui vérifiant la validité du token JWT
 module.exports = (req, res, next) => {
@@ -11,7 +10,7 @@ module.exports = (req, res, next) => {
         }
 
         const token = authHeader.split(" ")[1];
-        const decodedToken = jwt.verify(token, "RANDOM_TOKEN_SECRET");
+        const decodedToken = jwt.verify(token, process.env.JWT_SECRET_TOKEN);
         const userId = decodedToken.userId;
         req.auth = { userId: userId };
         next();

@@ -44,7 +44,15 @@ export default function Identification() {
                 },
                 body: JSON.stringify(data),
             });
+
+            const userData = await response.json();
+            console.log("create account userData : ", userData);
+
             if (response.ok) {
+                localStorage.setItem("userId", userData.userId);
+                const token = userData.token;
+                localStorage.setItem("token", token);
+                router.push("/manage");
                 console.log("success");
             }
         } catch (error) {
@@ -126,7 +134,8 @@ export default function Identification() {
     } = useForm<LoginFormValues>();
 
     const onSubmitSignup: SubmitHandler<SignupFormValues> = (data) => {
-        console.log(data);
+        setIsLoading(!isLoading);
+        console.log("signup data: ", data);
         createAccount(data);
     };
 
@@ -297,7 +306,7 @@ export default function Identification() {
                             >
                                 Cancel
                             </Button>
-                            <Button type="submit" colorPalette="teal" variant="solid">
+                            <Button loading={isLoading} type="submit" colorPalette="teal" variant="solid">
                                 Create
                             </Button>
                         </Card.Footer>
