@@ -5,6 +5,8 @@ import { RiArrowRightLine } from "react-icons/ri";
 import { Boxes } from "../components/background/background-boxes";
 import { useRouter } from "next/router";
 import preview from "../../public/images/preview.png";
+import preview_flat from "../../public/images/preview_flat.png";
+
 import logo from "../../public/images/planyLogo.png";
 
 import Image from "next/image";
@@ -61,7 +63,13 @@ export default function Home() {
                     <Image
                         className={`${styles.image} ${loaded ? styles.imageLoaded : ""}`}
                         src={preview}
-                        alt="Isometric illustration"
+                        alt="App preview illustration"
+                        onLoad={() => setLoaded(true)}
+                    />
+                    <Image
+                        className={`${styles.image_flat} ${loaded ? styles.imageLoaded : ""}`}
+                        src={preview_flat}
+                        alt="App preview illustration"
                         onLoad={() => setLoaded(true)}
                     />
                 </div>
