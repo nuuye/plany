@@ -138,49 +138,68 @@ export default function Manage() {
     };
 
     return (
-        <div className={styles.mainContainer}>
+        <>
             <Boxes allowColors={false} />
-            <div className={styles.headerContainer}>
-                <span>💠 Welcome back{user ? `, ${user.name}! ` : ""}</span>
+            <div className={styles.mainContainer}>
+                <div className={styles.headerContainer}>
+                    <span>💠 Welcome back{user ? `, ${user.name}! ` : ""}</span>
+                </div>
+                <div className={styles.menuContainer}>
+                    <MenuContainer tasks={tasks} setTasks={setTasks} />
+                </div>
+                <Card.Root className={styles.contentContainer}>
+                    <Card.Header className={styles.contentContainerHeader}>
+                        <span>My tasks {tasks.length > 0 ? `(${tasks.length})` : ""}</span>
+                        <Button
+                            onClick={() => deleteAll()}
+                            colorPalette="red"
+                            className={styles.deleteAllButton}
+                            variant="solid"
+                        >
+                            Delete all tasks
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                <path
+                                    fill="#ffffff"
+                                    d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"
+                                />
+                            </svg>
+                        </Button>
+                    </Card.Header>
+                    <Card.Body className={styles.contentContainerBody}>
+                        <div className={styles.tasksContainer}>
+                            {tasks.map((task, index) => (
+                                <Task
+                                    key={task._id}
+                                    description={task.description}
+                                    color={task.color}
+                                    onDelete={() => deleteTask(task._id)}
+                                    onModifying={() => toggleModifyingTask(task._id)}
+                                    isModifying={modifyingTaskId === task._id}
+                                    taskId={task._id}
+                                    isChecked={task.isChecked}
+                                    onCheck={() => toggleCheckingTask(task._id)}
+                                />
+                            ))}
+                        </div>
+                    </Card.Body>
+                    <Card.Footer className={styles.contentContainerFooter}>
+                        <Button
+                            onClick={() => deleteAll()}
+                            colorPalette="red"
+                            className={styles.deleteAllButtonMobile}
+                            variant="solid"
+                        >
+                            Delete all tasks
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                <path
+                                    fill="#ffffff"
+                                    d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"
+                                />
+                            </svg>
+                        </Button>
+                    </Card.Footer>
+                </Card.Root>
             </div>
-            <MenuContainer tasks={tasks} setTasks={setTasks} />
-            <Card.Root className={styles.contentContainer}>
-                <Card.Header className={styles.contentContainerHeader}>
-                    <span>My tasks {tasks.length > 0 ? `(${tasks.length})` : ""}</span>
-                    <Button
-                        onClick={() => deleteAll()}
-                        colorPalette="red"
-                        className={styles.deleteAllButton}
-                        variant="solid"
-                    >
-                        Delete all tasks
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
-                            <path
-                                fill="#ffffff"
-                                d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zM17 6H7v13h10zM9 17h2V8H9zm4 0h2V8h-2zM7 6v13z"
-                            />
-                        </svg>
-                    </Button>
-                </Card.Header>
-                <Card.Body className={styles.contentContainerBody}>
-                    <div className={styles.tasksContainer}>
-                        {tasks.map((task, index) => (
-                            <Task
-                                key={task._id}
-                                description={task.description}
-                                color={task.color}
-                                onDelete={() => deleteTask(task._id)}
-                                onModifying={() => toggleModifyingTask(task._id)}
-                                isModifying={modifyingTaskId === task._id}
-                                taskId={task._id}
-                                isChecked={task.isChecked}
-                                onCheck={() => toggleCheckingTask(task._id)}
-                            />
-                        ))}
-                    </div>
-                </Card.Body>
-                <Card.Footer />
-            </Card.Root>
-        </div>
+        </>
     );
 }

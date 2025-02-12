@@ -5,6 +5,9 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 30px;
     position: relative;
+    @media (max-width: 900px) {
+        overflow-y: auto;
+    }
 
     .headerContainer {
         position: absolute;
@@ -23,9 +26,20 @@
         }
     }
 
+    .menuContainer {
+        grid-column: 1 / 2;
+        @media (max-width: 900px) {
+            grid-column: 1 / 5;
+        }
+    }
+
     .contentContainer {
         background-color: #43606fd1;
         grid-column: 2 / 5;
+        @media (max-width: 900px) {
+            grid-column: 1 / 5;
+            grid-row: 1;
+        }
         .contentContainerHeader {
             display: flex;
             align-items: center;
@@ -36,6 +50,9 @@
             }
             .deleteAllButton {
                 background-color: #ff0000a3;
+                @media (max-width: 380px) {
+                    display: none;
+                }
             }
             .createButton {
                 width: 180px;
@@ -53,6 +70,17 @@
                 padding-right: 10px;
                 scrollbar-width: thin; /* Pour Firefox */
                 scrollbar-color: darkgray transparent; /* Pour Firefox */
+            }
+        }
+        .contentContainerFooter {
+            display: flex;
+            justify-content: center;
+            .deleteAllButtonMobile {
+                background-color: #ff0000a3;
+                display: none;
+                @media (max-width: 380px) {
+                    display: flex;
+                }
             }
         }
     }
