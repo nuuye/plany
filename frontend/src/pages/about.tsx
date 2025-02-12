@@ -10,10 +10,10 @@ export default function About() {
 
     return (
         <div className={styles.mainContainer}>
-            <Boxes />
+            <Boxes allowColors={typeof screen.orientation !== "undefined" ? false : true} />
             <Card.Root className={styles.cardRoot} size="lg">
                 <Card.Header className={styles.cardHeader}>About Plany</Card.Header>
-                <Card.Body>
+                <Card.Body className={styles.cardBody}>
                     <p>
                         <strong>Plany</strong> is a to-do list application designed to help users stay organized
                         effortlessly. This project was created to enhance my skills in both back-end and front-end
@@ -63,6 +63,18 @@ export default function About() {
                     </Button>
                 </Card.Footer>
             </Card.Root>
+            <Button
+                loading={isLoading}
+                colorPalette="teal"
+                className={styles.buttonMobile}
+                onClick={() => {
+                    setIsLoading(!isLoading);
+                    router.push("/");
+                }}
+            >
+                <IoIosArrowBack />
+                Go back
+            </Button>
         </div>
     );
 }
