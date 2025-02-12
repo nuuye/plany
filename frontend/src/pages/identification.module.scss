@@ -11,12 +11,21 @@
     }
 
     .loginContainer,
-    .checkContaier,
+    .checkContainer,
     .signupContainer {
         margin: 10px;
         position: absolute;
         z-index: 2;
         min-width: 400px;
+        .checkFooterContainer {
+            display: flex;
+            justify-content: space-between;
+            @media (max-width: 500px) {
+                display: flex;
+                flex-direction: column-reverse;
+                align-items: stretch;
+            }
+        }
     }
 }
 

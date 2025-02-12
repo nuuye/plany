@@ -197,7 +197,7 @@ export default function Identification() {
                                 </Field>
                             </Stack>
                         </Card.Body>
-                        <Card.Footer justifyContent="space-between">
+                        <Card.Footer className={styles.checkFooterContainer}>
                             <Button
                                 loading={isLoading}
                                 colorPalette="teal"
