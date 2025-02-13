@@ -33,6 +33,7 @@ export default function Identification() {
     const [email, setEmail] = useState<string>("");
     const [hasAccount, setHasAccount] = useState<AccountStatus>(AccountStatus.NEUTRAL);
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [isLoadingNext, setIsLoadingNext] = useState<boolean>(false);
 
     //API call to create an account
     const createAccount = async (data: SignupFormValues): Promise<void> => {
@@ -73,8 +74,10 @@ export default function Identification() {
 
             if (response.ok && response.status === 200) {
                 setHasAccount(AccountStatus.LOGIN);
+                setIsLoadingNext(false);
             } else {
                 setHasAccount(AccountStatus.SIGNUP);
+                setIsLoadingNext(false);
             }
         } catch (error) {
             console.log("Error:", error);
@@ -150,6 +153,7 @@ export default function Identification() {
     };
 
     const onSubmitEmail: SubmitHandler<EmailFormValues> = (data) => {
+        setIsLoadingNext(true);
         setEmail(data.email);
         console.log(data);
         hasAccountCheck(data.email);
@@ -209,7 +213,7 @@ export default function Identification() {
                             >
                                 Go back
                             </Button>
-                            <Button type="submit" colorPalette="teal" variant="solid">
+                            <Button loading={isLoadingNext} type="submit" colorPalette="teal" variant="solid">
                                 Next <MdOutlineKeyboardArrowRight />
                             </Button>
                         </Card.Footer>
