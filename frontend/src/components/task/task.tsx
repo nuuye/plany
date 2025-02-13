@@ -59,7 +59,7 @@ export default function Task({
                 console.error("Token not found in localStorage");
                 return;
             }
-            const response = await fetch(`http://localhost:8000/api/management/modifyTask/${taskId}`, {
+            const response = await fetch(`https://plany-backend.vercel.app/api/management/modifyTask/${taskId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",
@@ -93,7 +93,7 @@ export default function Task({
             }
             console.log("Updating task:", taskId, "New isChecked value:", checked);
 
-            const response = await fetch(`http://localhost:8000/api/management/modifyTask/${taskId}`, {
+            const response = await fetch(`https://plany-backend.vercel.app/api/management/modifyTask/${taskId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json",

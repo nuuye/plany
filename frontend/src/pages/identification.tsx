@@ -37,7 +37,7 @@ export default function Identification() {
     //API call to create an account
     const createAccount = async (data: SignupFormValues): Promise<void> => {
         try {
-            const response = await fetch("http://localhost:8000/api/auth/signup", {
+            const response = await fetch("https://plany-backend.vercel.app/api/auth/signup", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -63,7 +63,7 @@ export default function Identification() {
     //API call to check if an email is in the DB
     const hasAccountCheck = async (email: string): Promise<void> => {
         try {
-            const response = await fetch("http://localhost:8000/api/auth/checkingEmail", {
+            const response = await fetch("https://plany-backend.vercel.app/api/auth/checkingEmail", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -83,7 +83,7 @@ export default function Identification() {
 
     const isLoginSuccessful = async (credentials: LoginFormValues): Promise<boolean> => {
         try {
-            const response = await fetch("http://localhost:8000/api/auth/login", {
+            const response = await fetch("https://plany-backend.vercel.app/api/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

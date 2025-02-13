@@ -40,7 +40,7 @@ export default function MenuContainer({ tasks, setTasks }: menuContainerProps) {
                 return;
             }
 
-            const response = await fetch("http://localhost:8000/api/management/createTask", {
+            const response = await fetch("https://plany-backend.vercel.app/api/management/createTask", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

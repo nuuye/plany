@@ -47,7 +47,7 @@ export default function Manage() {
 
     const retrieveUser = async () => {
         try {
-            const response = await fetch(`http://localhost:8000/api/auth/getUser/${userId}`, {
+            const response = await fetch(`https://plany-backend.vercel.app/api/auth/getUser/${userId}`, {
                 method: "GET",
             });
 
@@ -71,7 +71,7 @@ export default function Manage() {
                 return;
             }
 
-            const response = await fetch(`http://localhost:8000/api/management/getTasks/${userId}`, {
+            const response = await fetch(`https://plany-backend.vercel.app/api/management/getTasks/${userId}`, {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
@@ -100,7 +100,7 @@ export default function Manage() {
                 console.error("Token not found in localStorage");
                 return;
             }
-            const response = await fetch(`http://localhost:8000/api/management/deleteOneTask/${id}`, {
+            const response = await fetch(`https://plany-backend.vercel.app/api/management/deleteOneTask/${id}`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
@@ -123,7 +123,7 @@ export default function Manage() {
                 console.error("Token not found in localStorage");
                 return;
             }
-            const response = await fetch(`http://localhost:8000/api/management/deleteAll`, {
+            const response = await fetch(`https://plany-backend.vercel.app/api/management/deleteAll`, {
                 method: "DELETE",
                 headers: {
                     "Content-Type": "application/json",
