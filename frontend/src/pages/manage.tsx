@@ -4,6 +4,8 @@ import styles from "./manage.module.scss";
 import Task from "../components/task/task";
 import MenuContainer from "../components/menuContainer/menuContainer";
 import { useEffect, useRef, useState } from "react";
+import planyLogo from "../../public/images/planyIcon.png";
+import Image from "next/image";
 
 interface Task {
     description: string;
@@ -142,7 +144,8 @@ export default function Manage() {
             <Boxes allowColors={false} />
             <div className={styles.mainContainer}>
                 <div className={styles.headerContainer}>
-                    <span>💠 Welcome back{user ? `, ${user.name}! ` : ""}</span>
+                    <Image src={planyLogo} alt="plany logo" className={styles.logo} />
+                    <span>Welcome back{user ? `, ${user.name}! ` : ""}</span>
                 </div>
                 <div className={styles.menuContainer}>
                     <MenuContainer tasks={tasks} setTasks={setTasks} />

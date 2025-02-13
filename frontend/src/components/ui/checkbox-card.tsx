@@ -86,7 +86,7 @@ export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps
                                 onChange={(e) => setInputValue(e.target.value)}
                             />
                         ) : (
-                            <ChakraCheckboxCard.Label>{label}</ChakraCheckboxCard.Label>
+                            <ChakraCheckboxCard.Label className={styles.labelContainer}>{label}</ChakraCheckboxCard.Label>
                         )}
                     </div>
                     <div className={styles.iconContainer}>

@@ -2,15 +2,22 @@ import { Boxes } from "../components/background/background-boxes";
 import { Button, Card } from "@chakra-ui/react";
 import styles from "./about.module.scss";
 import { IoIosArrowBack } from "react-icons/io";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import router from "next/router";
 
 export default function About() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [allowColors, setAllowColors] = useState(true);
+
+    useEffect(() => {
+        if (typeof window !== "undefined" && typeof screen.orientation !== "undefined") {
+            setAllowColors(false);
+        }
+    }, []);
 
     return (
         <div className={styles.mainContainer}>
-            <Boxes allowColors={typeof screen.orientation !== "undefined" ? false : true} />
+            <Boxes allowColors={allowColors} />
             <Card.Root className={styles.cardRoot} size="lg">
                 <Card.Header className={styles.cardHeader}>About Plany</Card.Header>
                 <Card.Body className={styles.cardBody}>
