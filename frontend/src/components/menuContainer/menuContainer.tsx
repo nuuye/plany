@@ -64,7 +64,6 @@ export default function MenuContainer({ tasks, setTasks }: menuContainerProps) {
                     { _id: newTask._id, description: taskDescription, color: color, isChecked: false},
                 ]);
                 setTaskDescription("");
-                console.log("task created and save in database");
             }
         } catch (error) {
             console.error("Network error:", error);
@@ -77,7 +76,6 @@ export default function MenuContainer({ tasks, setTasks }: menuContainerProps) {
             setIsLoading(!isLoading);
             // Supprimez le token du localStorage
             localStorage.removeItem("token");
-            console.log("Logout successful, token removed");
             // Redirect user
             router.push("/");
         } catch (error) {

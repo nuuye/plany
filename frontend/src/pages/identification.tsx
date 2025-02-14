@@ -47,14 +47,12 @@ export default function Identification() {
             });
 
             const userData = await response.json();
-            console.log("create account userData : ", userData);
 
             if (response.ok) {
                 localStorage.setItem("userId", userData.userId);
                 const token = userData.token;
                 localStorage.setItem("token", token);
                 router.push("/manage");
-                console.log("success");
             }
         } catch (error) {
             console.error("Error:", error);
@@ -96,15 +94,12 @@ export default function Identification() {
             const data = await response.json();
 
             if (response.ok) {
-                console.log(data);
                 localStorage.setItem("userId", data.userId);
                 const token = data.token;
                 localStorage.setItem("token", token);
                 router.push("/manage");
-                console.log("response is ok");
                 return true;
             } else {
-                console.log("response is NOT ok");
                 return false;
             }
         } catch {
@@ -138,24 +133,20 @@ export default function Identification() {
 
     const onSubmitSignup: SubmitHandler<SignupFormValues> = (data) => {
         setIsLoading(!isLoading);
-        console.log("signup data: ", data);
         createAccount(data);
     };
 
     const onSubmitLogin: SubmitHandler<LoginFormValues> = (data) => {
-        console.log(data);
         if (isLoginSuccessful(data)) {
             setIsLoading(!isLoading);
-            console.log("success");
         } else {
-            console.log("error");
+            console.log("error submit login");
         }
     };
 
     const onSubmitEmail: SubmitHandler<EmailFormValues> = (data) => {
         setIsLoadingNext(true);
         setEmail(data.email);
-        console.log(data);
         hasAccountCheck(data.email);
     };
 

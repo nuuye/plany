@@ -26,14 +26,9 @@ export default function Manage() {
     const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
 
     useEffect(() => {
-        console.log("userID: ", userId);
         retrieveUser();
         retrieveTasks();
     }, []);
-
-    useEffect(() => {
-        console.log(tasks);
-    }, [tasks]);
 
     const toggleModifyingTask = (taskId: string) => {
         setModifyingTaskId((prevId) => (prevId === taskId ? null : taskId));
@@ -53,7 +48,6 @@ export default function Manage() {
 
             if (response.ok) {
                 const data = await response.json();
-                console.log("user data: ", data);
                 setUser(data);
             } else {
                 console.error("Failed to fetch user");
@@ -86,7 +80,6 @@ export default function Manage() {
             }
 
             const data = await response.json();
-            console.log("Retrieved tasks:", data);
             setTasks(data);
         } catch (error) {
             console.error("Network error:", error);
@@ -109,7 +102,6 @@ export default function Manage() {
             });
             if (response.ok) {
                 setTasks((prevTasks) => prevTasks.filter((task) => task._id != id));
-                console.log("task deleted");
             }
         } catch (error) {
             console.log(error);
@@ -132,7 +124,6 @@ export default function Manage() {
             });
             if (response.ok) {
                 setTasks([]);
-                console.log("task deleted");
             }
         } catch (error) {
             console.log(error);

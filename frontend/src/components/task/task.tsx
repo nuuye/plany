@@ -79,8 +79,6 @@ export default function Task({
     };
 
     const handleCheckChange = async (checked: boolean) => {
-        console.log("handleCheckChange called! Checked value:", checked);
-
         if (onCheckChange) {
             onCheckChange(checked);
         }
@@ -91,7 +89,6 @@ export default function Task({
                 console.error("Token not found in localStorage");
                 return;
             }
-            console.log("Updating task:", taskId, "New isChecked value:", checked);
 
             const response = await fetch(`https://plany-backend.vercel.app/api/management/modifyTask/${taskId}`, {
                 method: "PUT",
@@ -127,7 +124,6 @@ export default function Task({
             onLabelChange={handleLabelChange}
             isChecked={isChecked}
             onCheck={(newValue) => {
-                console.log("Checkbox clicked! New value:", newValue);
                 handleCheckChange(newValue);
             }}
         />

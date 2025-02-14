@@ -63,7 +63,6 @@ export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps
             <ChakraCheckboxCard.Control
                 onClick={() => {
                     const newState = !isChecked;
-                    console.log("Checkbox clicked, new state:", newState);
                     if (onCheck) onCheck(newState);
                 }}
                 backgroundColor={customBackgroundColor}

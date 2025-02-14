@@ -1,7 +1,6 @@
 const Task = require("../models/task");
 
 exports.createTask = (req, res, next) => {
-    console.log("createTask req body: ", req.body);
     delete req.body._id;
     delete req.body._userId;
     const task = new Task({ ...req.body, userId: req.auth.userId });
