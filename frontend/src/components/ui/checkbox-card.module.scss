@@ -13,6 +13,7 @@
             display: flex;
             flex-direction: row;
             gap: 10px;
+            width: 0;
             flex-grow: 1;
             align-items: center;
             .inputContainer {
@@ -24,135 +25,6 @@
                 text-overflow: ellipsis;
                 max-width: 2000px; // Ajuste selon ton design
                 display: block;
-                @media (max-width: 2500px) {
-                    max-width: 1550px;
-                }
-                @media (max-width: 2370px) {
-                    max-width: 1420px;
-                }
-                @media (max-width: 2210px) {
-                    max-width: 1320px;
-                }
-                @media (max-width: 2075px) {
-                    max-width: 1220px;
-                }
-                @media (max-width: 1945px) {
-                    max-width: 1120px;
-                }
-                @media (max-width: 1805px) {
-                    max-width: 1020px;
-                }
-                @media (max-width: 1675px) {
-                    max-width: 920px;
-                }
-                @media (max-width: 1545px) {
-                    max-width: 840px;
-                }
-                @media (max-width: 1445px) {
-                    max-width: 780px;
-                }
-                @media (max-width: 1355px) {
-                    max-width: 700px;
-                }
-                @media (max-width: 1250px) {
-                    max-width: 640px;
-                }
-                @media (max-width: 1170px) {
-                    max-width: 600px;
-                }
-                @media (max-width: 1115px) {
-                    max-width: 565px;
-                }
-                @media (max-width: 1065px) {
-                    max-width: 525px;
-                }
-                @media (max-width: 1015px) {
-                    max-width: 505px;
-                }
-                @media (max-width: 990px) {
-                    max-width: 480px;
-                }
-                @media (max-width: 955px) {
-                    max-width: 450px;
-                }
-                @media (max-width: 915px) {
-                    max-width: 420px;
-                }
-                @media (max-width: 900px) {
-                    max-width: 630px;
-                }
-                @media (max-width: 865px) {
-                    max-width: 600px;
-                }
-                @media (max-width: 840px) {
-                    max-width: 575px;
-                }
-                @media (max-width: 815px) {
-                    max-width: 535px;
-                }
-                @media (max-width: 775px) {
-                    max-width: 505px;
-                }
-                @media (max-width: 740px) {
-                    max-width: 480px;
-                }
-                @media (max-width: 720px) {
-                    max-width: 460px;
-                }
-                @media (max-width: 700px) {
-                    max-width: 440px;
-                }
-                @media (max-width: 680px) {
-                    max-width: 420px;
-                }
-                @media (max-width: 660px) {
-                    max-width: 400px;
-                }
-                @media (max-width: 640px) {
-                    max-width: 380px;
-                }
-                @media (max-width: 620px) {
-                    max-width: 360px;
-                }
-                @media (max-width: 600px) {
-                    max-width: 340px;
-                }
-                @media (max-width: 580px) {
-                    max-width: 320px;
-                }
-                @media (max-width: 560px) {
-                    max-width: 300px;
-                }
-                @media (max-width: 540px) {
-                    max-width: 280px;
-                }
-                @media (max-width: 520px) {
-                    max-width: 260px;
-                }
-                @media (max-width: 500px) {
-                    max-width: 240px;
-                }
-                @media (max-width: 480px) {
-                    max-width: 220px;
-                }
-                @media (max-width: 460px) {
-                    max-width: 200px;
-                }
-                @media (max-width: 440px) {
-                    max-width: 180px;
-                }
-                @media (max-width: 420px) {
-                    max-width: 160px;
-                }
-                @media (max-width: 400px) {
-                    max-width: 140px;
-                }
-                @media (max-width: 380px) {
-                    max-width: 120px;
-                }
-                @media (max-width: 360px) {
-                    max-width: 100px;
-                }
             }
             .checkbox {
                 cursor: pointer;
