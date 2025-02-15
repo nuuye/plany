@@ -6,6 +6,7 @@ import { Boxes } from "../components/background/background-boxes";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/router";
 import { MdOutlineKeyboardArrowRight } from "react-icons/md";
+import { createAccountRequest, hasAccountCheckRequest, isLoginSuccessfulRequest } from "../services/user";
 
 enum AccountStatus {
     NEUTRAL = 0, //email check interface
@@ -31,78 +32,47 @@ type EmailFormValues = {
 export default function Identification() {
     const router = useRouter();
     const [email, setEmail] = useState<string>("");
+    const [loginErrorMessage, setLoginErrorMessage] = useState<string>("");
     const [hasAccount, setHasAccount] = useState<AccountStatus>(AccountStatus.NEUTRAL);
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isLoadingNext, setIsLoadingNext] = useState<boolean>(false);
 
-    //API call to create an account
+    //function calling the API to create an account
     const createAccount = async (data: SignupFormValues): Promise<void> => {
-        try {
-            const response = await fetch("https://plany-backend.vercel.app/api/auth/signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            });
-
-            const userData = await response.json();
-
-            if (response.ok) {
-                localStorage.setItem("userId", userData.userId);
-                const token = userData.token;
-                localStorage.setItem("token", token);
-                router.push("/manage");
-            }
-        } catch (error) {
-            console.error("Error:", error);
+        const userData = await createAccountRequest(data);
+        if (userData) {
+            localStorage.setItem("userId", userData.userId);
+            const token = userData.token;
+            localStorage.setItem("token", token);
+            router.push("/manage");
         }
     };
 
-    //API call to check if an email is in the DB
+    //function calling the API to check if user email is registered or not
     const hasAccountCheck = async (email: string): Promise<void> => {
-        try {
-            const response = await fetch("https://plany-backend.vercel.app/api/auth/checkingEmail", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({ email }),
-            });
-
-            if (response.ok && response.status === 200) {
-                setHasAccount(AccountStatus.LOGIN);
-                setIsLoadingNext(false);
-            } else {
-                setHasAccount(AccountStatus.SIGNUP);
-                setIsLoadingNext(false);
-            }
-        } catch (error) {
-            console.log("Error:", error);
+        const success = await hasAccountCheckRequest(email);
+        if (success) {
+            setHasAccount(AccountStatus.LOGIN);
+            setIsLoadingNext(false);
+        } else {
+            setHasAccount(AccountStatus.SIGNUP);
+            setIsLoadingNext(false);
         }
     };
 
     const isLoginSuccessful = async (credentials: LoginFormValues): Promise<boolean> => {
-        try {
-            const response = await fetch("https://plany-backend.vercel.app/api/auth/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(credentials),
-            });
-            const data = await response.json();
-
-            if (response.ok) {
-                localStorage.setItem("userId", data.userId);
-                const token = data.token;
-                localStorage.setItem("token", token);
-                router.push("/manage");
-                return true;
-            } else {
-                return false;
-            }
-        } catch {
+        const data = await isLoginSuccessfulRequest(credentials);
+        if (data) {
+            localStorage.setItem("userId", data.userId);
+            const token = data.token;
+            localStorage.setItem("token", token);
+            router.push("/manage");
+            setLoginErrorMessage('');
+            return true;
+        } else {
+            setIsLoading(false);
+            resetLogin({ email: email, password: "" });
+            setLoginErrorMessage('Invalid password, try again')
             return false;
         }
     };
@@ -234,6 +204,7 @@ export default function Identification() {
                                     label="Password"
                                     invalid={!!errorsLogin.password}
                                     errorText={errorsLogin.password?.message}
+                                    helperText={loginErrorMessage}
                                 >
                                     <Input
                                         type="password"
@@ -247,7 +218,11 @@ export default function Identification() {
                             <Button
                                 colorPalette="teal"
                                 variant="outline"
-                                onClick={() => setHasAccount(AccountStatus.NEUTRAL)}
+                                onClick={() => {
+                                    setIsLoading(false);
+                                    setHasAccount(AccountStatus.NEUTRAL);
+                                    setLoginErrorMessage('');
+                                }}
                             >
                                 Cancel
                             </Button>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import styles from "./index.module.scss";
-import { Button, Card, Input, Stack } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { RiArrowRightLine } from "react-icons/ri";
 import { Boxes } from "../components/background/background-boxes";
 import { useRouter } from "next/router";
