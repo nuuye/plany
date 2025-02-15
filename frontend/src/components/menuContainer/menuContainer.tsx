@@ -1,5 +1,5 @@
 "use client";
-import { Card, Field, Textarea, Button, Stack } from "@chakra-ui/react";
+import { Card, Field, Textarea, Button } from "@chakra-ui/react";
 import styles from "./menuContainer.module.scss";
 import {
     ColorPickerLabel,
@@ -9,8 +9,8 @@ import {
     ColorPickerValueText,
 } from "@/components/ui/color-picker";
 import { useState } from "react";
-import { CgLogOut } from "react-icons/cg";
 import { useRouter } from "next/router";
+import { createTaskRequest } from "../../services/task";
 
 interface menuContainerProps {
     tasks: Task[];
@@ -33,43 +33,15 @@ export default function MenuContainer({ tasks, setTasks }: menuContainerProps) {
     const [isLoading, setIsLoading] = useState<boolean>(false);
 
     const createTask = async () => {
-        try {
-            const token = localStorage.getItem("token"); // Récupérez le token depuis le localStorage
-            if (!token) {
-                console.error("Token not found in localStorage");
-                return;
-            }
-
-            const response = await fetch("https://plany-backend.vercel.app/api/management/createTask", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`, // Ajoutez le token dans l'en-tête
-                },
-                body: JSON.stringify({
-                    description: taskDescription,
-                    color: color,
-                    isChecked: false,
-                }),
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.error("Error while saving task:", errorData.message || response.statusText);
-                return;
-            } else {
-                const newTask = await response.json(); //retrieving task to assign id
-                setTasks((prevTasks) => [
-                    ...prevTasks,
-                    { _id: newTask._id, description: taskDescription, color: color, isChecked: false},
-                ]);
-                setTaskDescription("");
-            }
-        } catch (error) {
-            console.error("Network error:", error);
+        const newTask = await createTaskRequest(taskDescription, color);
+        if (newTask) {
+            setTasks((prevTasks) => [
+                ...prevTasks,
+                { _id: newTask._id, description: taskDescription, color: color, isChecked: false },
+            ]);
+            setTaskDescription("");
         }
     };
-
 
     const logout = () => {
         try {

@@ -1,6 +1,7 @@
 import { CheckboxCard } from "@/components/ui/checkbox-card";
 import styles from "./task.module.scss";
 import { useState } from "react";
+import { modifyTaskRequest } from "../../services/task";
 
 interface TaskProps {
     description?: string;
@@ -52,61 +53,16 @@ export default function Task({
         if (onLabelChange) {
             onLabelChange(newLabel);
         }
-
-        try {
-            const token = localStorage.getItem("token"); // Récupérez le token depuis le localStorage
-            if (!token) {
-                console.error("Token not found in localStorage");
-                return;
-            }
-            const response = await fetch(`https://plany-backend.vercel.app/api/management/modifyTask/${taskId}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({ description: newLabel }),
-            });
-
-            if (response.ok) {
-                console.log("Task modified successfully");
-            } else {
-                console.error("Failed to modify task");
-            }
-        } catch (error) {
-            console.error("Error modifying task:", error);
-        }
+        await modifyTaskRequest(taskId, undefined, newLabel);
     };
 
     const handleCheckChange = async (checked: boolean) => {
         if (onCheckChange) {
             onCheckChange(checked);
         }
-
-        try {
-            const token = localStorage.getItem("token");
-            if (!token) {
-                console.error("Token not found in localStorage");
-                return;
-            }
-
-            const response = await fetch(`https://plany-backend.vercel.app/api/management/modifyTask/${taskId}`, {
-                method: "PUT",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({ isChecked: checked }),
-            });
-
-            if (response.ok) {
-                console.log("Task check status updated successfully");
-                setIsChecked(checked);
-            } else {
-                console.error("Failed to update task check status");
-            }
-        } catch (error) {
-            console.error("Error updating task check status:", error);
+        const success = await modifyTaskRequest(taskId, checked, undefined);
+        if (success) {
+            setIsChecked(checked);
         }
     };
 

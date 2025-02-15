@@ -90,4 +90,70 @@ export const retrieveTasksRequest = async (userId: string): Promise<[Task]> => {
     }
 };
 
+//API request to modify a task
+export const modifyTaskRequest = async (
+    taskId: string,
+    isChecked?: boolean,
+    description?: string
+): Promise<boolean> => {
+    try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            console.error("Token not found in localStorage");
+            return;
+        }
+        const response = await fetch(`${API_URL}/modifyTask/${taskId}`, {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({ description: description, isChecked: isChecked }),
+        });
 
+        if (response.ok) {
+            return true;
+        } else {
+            return false;
+        }
+    } catch (error) {
+        console.error("Error modifying task:", error);
+        return false;
+    }
+};
+
+//API call to create a new task
+export const createTaskRequest = async (description: string, color: string): Promise<Task> => {
+    try {
+        const token = localStorage.getItem("token");
+        if (!token) {
+            console.error("Token not found in localStorage");
+            return;
+        }
+
+        const response = await fetch(`${API_URL}/createTask`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+                description: description,
+                color: color,
+                isChecked: false,
+            }),
+        });
+
+        if (!response.ok) {
+            const errorData = await response.json();
+            console.error("Error while creating task:", errorData.message || response.statusText);
+            return null;
+        } else {
+            const newTask = await response.json();
+            return newTask;
+        }
+    } catch (error) {
+        console.error("Network error:", error);
+        return null;
+    }
+};
