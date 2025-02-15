@@ -6,6 +6,8 @@ import MenuContainer from "../components/menuContainer/menuContainer";
 import { useEffect, useRef, useState } from "react";
 import planyLogo from "../../public/images/planyIcon.png";
 import Image from "next/image";
+import { deleteAllRequest, deleteTaskRequest, retrieveTasksRequest } from "../services/task";
+import { retrieveUserRequest } from "../services/user";
 
 interface Task {
     description: string;
@@ -41,98 +43,35 @@ export default function Manage() {
     };
 
     const retrieveUser = async () => {
-        try {
-            const response = await fetch(`https://plany-backend.vercel.app/api/auth/getUser/${userId}`, {
-                method: "GET",
-            });
-
-            if (response.ok) {
-                const data = await response.json();
-                setUser(data);
-            } else {
-                console.error("Failed to fetch user");
-            }
-        } catch (error) {
-            console.error("Error fetching user:", error);
+        const data = await retrieveUserRequest(userId);
+        if (data) {
+            setUser(data);
         }
     };
 
     const retrieveTasks = async () => {
-        try {
-            const token = localStorage.getItem("token"); // Récupérez le token depuis le localStorage
-            if (!token) {
-                console.error("Token not found in localStorage");
-                return;
-            }
-
-            const response = await fetch(`https://plany-backend.vercel.app/api/management/getTasks/${userId}`, {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                console.error("Error while retrieving tasks:", errorData.message || response.statusText);
-                return;
-            }
-
-            const data = await response.json();
+        const data = await retrieveTasksRequest(userId);
+        if (data) {
             setTasks(data);
-        } catch (error) {
-            console.error("Network error:", error);
         }
     };
 
     const deleteTask = async (id: string) => {
-        try {
-            const token = localStorage.getItem("token"); // Récupérez le token depuis le localStorage
-            if (!token) {
-                console.error("Token not found in localStorage");
-                return;
-            }
-            const response = await fetch(`https://plany-backend.vercel.app/api/management/deleteOneTask/${id}`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            if (response.ok) {
-                setTasks((prevTasks) => prevTasks.filter((task) => task._id != id));
-            }
-        } catch (error) {
-            console.log(error);
+        const success = await deleteTaskRequest(id);
+        if (success) {
+            setTasks((prevTasks) => prevTasks.filter((task) => task._id != id));
         }
     };
 
     const deleteAll = async () => {
-        try {
-            const token = localStorage.getItem("token"); // Récupérez le token depuis le localStorage
-            if (!token) {
-                console.error("Token not found in localStorage");
-                return;
-            }
-            const response = await fetch(`https://plany-backend.vercel.app/api/management/deleteAll`, {
-                method: "DELETE",
-                headers: {
-                    "Content-Type": "application/json",
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            if (response.ok) {
-                setTasks([]);
-            }
-        } catch (error) {
-            console.log(error);
+        const success = await deleteAllRequest();
+        if (success) {
+            setTasks([]);
         }
     };
 
     return (
         <>
-            <Boxes allowColors={false} />
             <div className={styles.mainContainer}>
                 <div className={styles.headerContainer}>
                     <Image src={planyLogo} alt="plany logo" className={styles.logo} />
