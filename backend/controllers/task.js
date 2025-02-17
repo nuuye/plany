@@ -10,7 +10,11 @@ exports.createTask = (req, res, next) => {
 };
 
 exports.getTasks = (req, res, next) => {
-    Task.find({userId: req.params.userId})
+    if (req.params.userId !== req.auth.userId) {
+        return res.status(403).json({ message: "Unauthorized access" });
+    }
+
+    Task.find({ userId: req.params.userId })
         .then((tasks) => res.status(200).json(tasks))
         .catch((error) => res.status(500).json({ error }));
 };
