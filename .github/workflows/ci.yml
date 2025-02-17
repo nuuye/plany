@@ -1,43 +1,45 @@
 name: CI
 
 on:
-    push:
-        branches:
-            - main
-    pull_request:
-        branches:
-            - main
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
-    build-and-test:
-        runs-on: ubuntu-latest
+  build-and-test:
+    runs-on: ubuntu-latest
 
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v3
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          path: plany
 
-            # Frontend
-            - name: Setup Node.js for Frontend
-              uses: actions/setup-node@v3
-              with:
-                  node-version: "18"
-                  cache: "npm"
+      # Frontend
+      - name: Setup Node.js for Frontend
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install Dependencies (Frontend)
+        working-directory: ./plany/frontend
+        run: npm ci
 
-            - name: Install Dependencies (Frontend)
-              working-directory: ./frontend
-              run: npm ci
+      - name: Run Tests (Frontend)
+        working-directory: ./plany/frontend
+        run: npm test
 
-            - name: Run Tests (Frontend)
-              working-directory: ./frontend
-              run: npm test
+      # Backend
+      - name: Setup Node.js for Backend
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
 
-            # Backend
-            - name: Setup Node.js for Backend
-              uses: actions/setup-node@v3
-              with:
-                  node-version: "18"
-                  cache: "npm"
-
-            - name: Install Dependencies (Backend)
-              working-directory: ./backend
-              run: npm ci
+      - name: Install Dependencies (Backend)
+        working-directory: ./plany/backend
+        run: npm ci
