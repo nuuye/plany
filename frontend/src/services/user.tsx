@@ -1,9 +1,5 @@
 const API_URL = "https://plany-backend.vercel.app/api/auth";
-
-interface UserType {
-    name: string;
-    email: string;
-}
+import { UserType } from "../types/index";
 
 interface SignupFormValues {
     name: string;

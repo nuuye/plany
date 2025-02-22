@@ -1,11 +1,5 @@
 const API_URL = "https://plany-backend.vercel.app/api/management";
-
-interface Task {
-    description: string;
-    color: string;
-    _id: string;
-    isChecked: boolean;
-}
+import { TaskType } from "../types/index";
 
 // API request to delete all tasks
 export const deleteAllRequest = async (): Promise<boolean> => {
@@ -60,7 +54,7 @@ export const deleteTaskRequest = async (id: string): Promise<boolean> => {
 };
 
 //API request to retrieve the tasks of an existing user
-export const retrieveTasksRequest = async (userId: string): Promise<[Task]> => {
+export const retrieveTasksRequest = async (userId: string): Promise<[TaskType]> => {
     try {
         const token = localStorage.getItem("token");
         if (!token) {
@@ -123,7 +117,7 @@ export const modifyTaskRequest = async (
 };
 
 //API call to create a new task
-export const createTaskRequest = async (description: string, color: string): Promise<Task> => {
+export const createTaskRequest = async (description: string, color: string): Promise<TaskType> => {
     try {
         const token = localStorage.getItem("token");
         if (!token) {

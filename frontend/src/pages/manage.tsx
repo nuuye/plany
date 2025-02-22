@@ -8,20 +8,10 @@ import planyLogo from "../../public/images/planyIcon.png";
 import Image from "next/image";
 import { deleteAllRequest, deleteTaskRequest, retrieveTasksRequest } from "../services/task";
 import { retrieveUserRequest } from "../services/user";
-
-interface Task {
-    description: string;
-    color: string;
-    _id: string;
-    isChecked: boolean;
-}
-interface UserType {
-    name: string;
-    email: string;
-}
+import { UserType, TaskType } from "../types/index";
 
 export default function Manage() {
-    const [tasks, setTasks] = useState<Task[]>([]);
+    const [tasks, setTasks] = useState<TaskType[]>([]);
     const [user, setUser] = useState<UserType>();
     const [modifyingTaskId, setModifyingTaskId] = useState<string | null>(null);
     // Ensure localStorage is only accessed in the client-side environment (not during server-side rendering)
