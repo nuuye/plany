@@ -14,18 +14,18 @@ enum AccountStatus {
     SIGNUP = 2, //signup interface
 }
 
-type SignupFormValues = {
+interface SignupFormValues {
     name: string;
     email: string;
     password: string;
 };
 
-type LoginFormValues = {
+interface LoginFormValues {
     email: string;
     password: string;
 };
 
-type EmailFormValues = {
+interface EmailFormValues  {
     email: string;
 };
 
@@ -37,18 +37,18 @@ export default function Identification() {
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [isLoadingNext, setIsLoadingNext] = useState<boolean>(false);
 
-    //function calling the API to create an account
+    // async function to create an account with name / email / password
     const createAccount = async (data: SignupFormValues): Promise<void> => {
         const userData = await createAccountRequest(data);
         if (userData) {
-            localStorage.setItem("userId", userData.userId);
+            localStorage.setItem("userId", userData.userId); //setting userId in localStorage
             const token = userData.token;
-            localStorage.setItem("token", token);
+            localStorage.setItem("token", token);  //setting JWT token in localStorage
             router.push("/manage");
         }
     };
 
-    //function calling the API to check if user email is registered or not
+    // async function checking if an email is in the database or not
     const hasAccountCheck = async (email: string): Promise<void> => {
         const success = await hasAccountCheckRequest(email);
         if (success) {
@@ -60,19 +60,20 @@ export default function Identification() {
         }
     };
 
+    //async function to check if email / password are correct
     const isLoginSuccessful = async (credentials: LoginFormValues): Promise<boolean> => {
         const data = await isLoginSuccessfulRequest(credentials);
         if (data) {
-            localStorage.setItem("userId", data.userId);
+            localStorage.setItem("userId", data.userId); //setting userId in localStorage
             const token = data.token;
-            localStorage.setItem("token", token);
+            localStorage.setItem("token", token); //setting JWT token in localStorage
             router.push("/manage");
-            setLoginErrorMessage('');
+            setLoginErrorMessage("");
             return true;
         } else {
             setIsLoading(false);
             resetLogin({ email: email, password: "" });
-            setLoginErrorMessage('Invalid password, try again')
+            setLoginErrorMessage("Invalid password, try again");
             return false;
         }
     };
@@ -221,7 +222,7 @@ export default function Identification() {
                                 onClick={() => {
                                     setIsLoading(false);
                                     setHasAccount(AccountStatus.NEUTRAL);
-                                    setLoginErrorMessage('');
+                                    setLoginErrorMessage("");
                                 }}
                             >
                                 Cancel

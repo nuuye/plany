@@ -1,9 +1,8 @@
-import { Boxes } from "../components/background/background-boxes";
-import { Button, Card, Input, Stack } from "@chakra-ui/react";
+import { Button, Card } from "@chakra-ui/react";
 import styles from "./manage.module.scss";
 import Task from "../components/task/task";
 import MenuContainer from "../components/menuContainer/menuContainer";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import planyLogo from "../../public/images/planyIcon.png";
 import Image from "next/image";
 import { deleteAllRequest, deleteTaskRequest, retrieveTasksRequest } from "../services/task";
@@ -14,24 +13,29 @@ export default function Manage() {
     const [tasks, setTasks] = useState<TaskType[]>([]);
     const [user, setUser] = useState<UserType>();
     const [modifyingTaskId, setModifyingTaskId] = useState<string | null>(null);
+
     // Ensure localStorage is only accessed in the client-side environment (not during server-side rendering)
     const userId = typeof window !== "undefined" ? localStorage.getItem("userId") : null;
 
+    //retrieve user and its tasks at loading
     useEffect(() => {
         retrieveUser();
         retrieveTasks();
     }, []);
 
+    //toggle to update task status (label or input) frontend wise
     const toggleModifyingTask = (taskId: string) => {
         setModifyingTaskId((prevId) => (prevId === taskId ? null : taskId));
     };
 
+    //toggle to update isCheck attribute frontend wise
     const toggleCheckingTask = (taskId: string) => {
         setTasks((prevTasks) =>
             prevTasks.map((task) => (task._id === taskId ? { ...task, isChecked: !task.isChecked } : task))
         );
     };
 
+    // async function to retrieve the logged user (name, email)
     const retrieveUser = async () => {
         const data = await retrieveUserRequest(userId);
         if (data) {
@@ -39,6 +43,7 @@ export default function Manage() {
         }
     };
 
+    //async function to retrieve all tasks related to the logged user
     const retrieveTasks = async () => {
         const data = await retrieveTasksRequest(userId);
         if (data) {
@@ -46,6 +51,7 @@ export default function Manage() {
         }
     };
 
+    // async function to delete a specific task
     const deleteTask = async (id: string) => {
         const success = await deleteTaskRequest(id);
         if (success) {
@@ -53,6 +59,7 @@ export default function Manage() {
         }
     };
 
+    //async function to delete all tasks
     const deleteAll = async () => {
         const success = await deleteAllRequest();
         if (success) {
