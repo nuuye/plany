@@ -63,7 +63,7 @@ export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps
             <ChakraCheckboxCard.Control
                 onClick={() => {
                     const newState = !isChecked;
-                    if (onCheck) onCheck(newState);
+                    onCheck(newState);
                 }}
                 backgroundColor={customBackgroundColor}
                 className={styles.taskContainer}
@@ -73,7 +73,7 @@ export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps
                     <div className={styles.checkLabelContainer}>
                         <Checkbox
                             checked={isChecked}
-                            onCheckedChange={(e) => onCheck(!!e.checked)}
+                            onCheckedChange={(e) => onCheck(!!e.checked)} //!! to ensure boolean conversion
                             className={styles.checkbox}
                         />
                         {isModifying ? (

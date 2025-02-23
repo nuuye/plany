@@ -90,7 +90,7 @@ export default function Manage() {
                     </Card.Header>
                     <Card.Body className={styles.contentContainerBody}>
                         <div className={styles.tasksContainer}>
-                            {tasks.map((task, index) => (
+                            {tasks.map((task) => (
                                 <Task
                                     key={task._id}
                                     description={task.description}

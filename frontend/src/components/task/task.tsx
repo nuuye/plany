@@ -13,7 +13,6 @@ interface TaskProps {
     taskId: string;
     onCheck?: () => void;
     isChecked?: boolean;
-    onCheckChange?: (checkboxState: boolean) => void;
 }
 
 export default function Task({
@@ -26,7 +25,6 @@ export default function Task({
     taskId,
     isChecked: initialIsChecked,
     onCheck,
-    onCheckChange,
 }: TaskProps) {
     const [label, setLabel] = useState(description);
     const [isChecked, setIsChecked] = useState(initialIsChecked);
@@ -57,9 +55,6 @@ export default function Task({
     };
 
     const handleCheckChange = async (checked: boolean) => {
-        if (onCheckChange) {
-            onCheckChange(checked);
-        }
         const success = await modifyTaskRequest(taskId, checked, undefined);
         if (success) {
             setIsChecked(checked);
