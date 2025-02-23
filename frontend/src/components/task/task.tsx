@@ -9,7 +9,6 @@ interface TaskProps {
     onDelete?: () => void;
     onModifying?: () => void;
     isModifying?: boolean;
-    onLabelChange?: (newLabel: string) => void;
     taskId: string;
     onCheck?: () => void;
     isChecked?: boolean;
@@ -21,9 +20,8 @@ export default function Task({
     onDelete,
     onModifying,
     isModifying,
-    onLabelChange,
     taskId,
-    isChecked: initialIsChecked,
+    isChecked: initialIsChecked, //rename
     onCheck,
 }: TaskProps) {
     const [label, setLabel] = useState(description);
@@ -46,12 +44,12 @@ export default function Task({
         }
     };
 
+    // update label value & API call to modify task label
     const handleLabelChange = async (newLabel: string) => {
-        setLabel(newLabel);
-        if (onLabelChange) {
-            onLabelChange(newLabel);
+        const success = await modifyTaskRequest(taskId, undefined, newLabel);
+        if (success) {
+            setLabel(newLabel);
         }
-        await modifyTaskRequest(taskId, undefined, newLabel);
     };
 
     const handleCheckChange = async (checked: boolean) => {
@@ -72,7 +70,7 @@ export default function Task({
             onDelete={onDelete}
             onModifying={onModifying}
             isModifying={isModifying}
-            onLabelChange={handleLabelChange}
+            onLabelChange={(newLabel) => handleLabelChange(newLabel)}
             isChecked={isChecked}
             onCheck={(newValue) => {
                 handleCheckChange(newValue);

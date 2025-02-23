@@ -12,7 +12,7 @@ export interface CheckboxCardProps extends ChakraCheckboxCard.RootProps {
     customBackgroundColor?: string;
     onDelete?: () => void;
     isModifying?: boolean;
-    onModifying?: () => void;
+    onModifying: () => void;
     onLabelChange?: (newLabel: string) => void;
     isChecked?: boolean;
     onCheck?: (newValue: boolean) => void;
@@ -43,13 +43,9 @@ export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps
             if (onLabelChange && inputValue !== label) {
                 onLabelChange(inputValue);
             }
-            if (onModifying) {
-                onModifying();
-            }
+            onModifying(); //deactivate modification mode
         } else {
-            if (onModifying) {
-                onModifying();
-            }
+            onModifying(); //activate modification mode
             setTimeout(() => {
                 if (inputRef.current) {
                     inputRef.current.focus();
@@ -85,7 +81,9 @@ export const CheckboxCard = React.forwardRef<HTMLInputElement, CheckboxCardProps
                                 onChange={(e) => setInputValue(e.target.value)}
                             />
                         ) : (
-                            <ChakraCheckboxCard.Label className={styles.labelContainer}>{label}</ChakraCheckboxCard.Label>
+                            <ChakraCheckboxCard.Label className={styles.labelContainer}>
+                                {label}
+                            </ChakraCheckboxCard.Label>
                         )}
                     </div>
                     <div className={styles.iconContainer}>
